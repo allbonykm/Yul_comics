@@ -160,29 +160,57 @@ footer p {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Back Button */
+/* Back Button - Moved to bottom-right circular button */
 .back-button {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
     background: linear-gradient(135deg, #FFB6C1, #FFC0CB);
     color: white;
-    padding: 0.8rem 1.5rem;
-    border-radius: 50px;
+    padding: 0;
+    border-radius: 50%;
     text-decoration: none;
     font-weight: 700;
-    font-family: 'Dongle', cursive;
     font-size: 1.8rem;
-    box-shadow: 0 5px 15px rgba(255, 182, 193, 0.4);
+    box-shadow: 0 4px 12px rgba(255, 182, 193, 0.5);
     transition: all 0.3s ease;
     z-index: 1000;
-    border: 2px solid white;
+    border: 3px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .back-button:hover {
     background: linear-gradient(135deg, #FF69B4, #FFB6C1);
-    transform: scale(1.08);
-    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.5);
+    transform: scale(1.15);
+    box-shadow: 0 6px 16px rgba(255, 105, 180, 0.6);
+}
+
+/* Comic Text Readability - Larger readable font for content */
+.text-box,
+.dialogue-box,
+.text-box p,
+.dialogue-box p,
+.space-y-2,
+.space-y-3,
+.space-y-4 {
+    font-family: 'Noto Sans KR', sans-serif !important;
+}
+
+.text-box,
+.dialogue-box {
+    font-size: 1.1rem !important;
+    line-height: 1.8 !important;
+}
+
+.text-box p,
+.dialogue-box p {
+    font-size: 1.05rem !important;
+    line-height: 1.7 !important;
+    margin-bottom: 0.75rem !important;
 }
 
 /* Mobile Responsiveness */
@@ -201,8 +229,11 @@ footer p {
     }
 
     .back-button {
-        padding: 0.6rem 1.2rem;
+        width: 48px;
+        height: 48px;
         font-size: 1.5rem;
+        bottom: 16px;
+        right: 16px;
     }
 
     footer p {
