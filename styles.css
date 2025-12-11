@@ -1,0 +1,211 @@
+/* Import Cute Korean Font */
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@300;400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Dongle', 'Noto Sans KR', sans-serif;
+    background: linear-gradient(135deg, #87CEEB 0%, #B0E0E6 50%, #E0F6FF 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Decorative clouds */
+body::before {
+    content: '☁️';
+    position: fixed;
+    top: 10%;
+    left: 5%;
+    font-size: 3rem;
+    opacity: 0.6;
+    animation: float 6s ease-in-out infinite;
+}
+
+body::after {
+    content: '☁️';
+    position: fixed;
+    top: 20%;
+    right: 10%;
+    font-size: 2.5rem;
+    opacity: 0.5;
+    animation: float 8s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Header */
+header {
+    background: linear-gradient(135deg, #87CEEB, #4FC3F7);
+    color: white;
+    text-align: center;
+    padding: 2.5rem 1rem;
+    box-shadow: 0 6px 20px rgba(79, 195, 247, 0.4);
+    border-bottom: 4px solid #FFB6C1;
+}
+
+header h1 {
+    font-family: 'Dongle', cursive;
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-shadow: 3px 3px 6px rgba(255, 182, 193, 0.5);
+    letter-spacing: 2px;
+}
+
+/* Main Content */
+main {
+    flex: 1;
+    max-width: 600px;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.comic-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.comic-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: linear-gradient(135deg, #FFFFFF, #F0F8FF);
+    padding: 1.5rem 1.8rem;
+    border-radius: 25px;
+    text-decoration: none;
+    color: #333;
+    font-size: 2rem;
+    font-weight: 400;
+    font-family: 'Dongle', cursive;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(135, 206, 235, 0.3);
+    border: 3px solid #FFB6C1;
+    position: relative;
+    overflow: hidden;
+}
+
+.comic-item::before {
+    content: '✨';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.comic-item:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(135, 206, 235, 0.5);
+    background: linear-gradient(135deg, #FFF0F5, #E6F3FF);
+    border-color: #4FC3F7;
+}
+
+.comic-item:hover::before {
+    opacity: 1;
+    right: 20px;
+}
+
+.comic-item .icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(135deg, #87CEEB, #4FC3F7);
+    color: white;
+    text-align: center;
+    padding: 1.8rem;
+    margin-top: auto;
+    border-top: 4px solid #FFB6C1;
+}
+
+footer p {
+    font-family: 'Dongle', cursive;
+    font-size: 1.8rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Back Button */
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(135deg, #FFB6C1, #FFC0CB);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    font-family: 'Dongle', cursive;
+    font-size: 1.8rem;
+    box-shadow: 0 5px 15px rgba(255, 182, 193, 0.4);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    border: 2px solid white;
+}
+
+.back-button:hover {
+    background: linear-gradient(135deg, #FF69B4, #FFB6C1);
+    transform: scale(1.08);
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.5);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+    header h1 {
+        font-size: 2.8rem;
+    }
+
+    .comic-item {
+        padding: 1.2rem 1.5rem;
+        font-size: 1.7rem;
+    }
+
+    .comic-item .icon {
+        font-size: 2rem;
+    }
+
+    .back-button {
+        padding: 0.6rem 1.2rem;
+        font-size: 1.5rem;
+    }
+
+    footer p {
+        font-size: 1.5rem;
+    }
+}
