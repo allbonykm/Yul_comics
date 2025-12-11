@@ -160,11 +160,12 @@ footer p {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Back Button - Moved to bottom-right circular button */
+/* Back Button - Bottom center position */
 .back-button {
     position: fixed;
     bottom: 24px;
-    right: 24px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 56px;
     height: 56px;
     background: linear-gradient(135deg, #FFB6C1, #FFC0CB);
@@ -185,7 +186,7 @@ footer p {
 
 .back-button:hover {
     background: linear-gradient(135deg, #FF69B4, #FFB6C1);
-    transform: scale(1.15);
+    transform: translateX(-50%) scale(1.15);
     box-shadow: 0 6px 16px rgba(255, 105, 180, 0.6);
 }
 
@@ -233,7 +234,6 @@ footer p {
         height: 48px;
         font-size: 1.5rem;
         bottom: 16px;
-        right: 16px;
     }
 
     footer p {
