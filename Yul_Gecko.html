@@ -1,40 +1,128 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>율이의 가족여행</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap"
+        rel="stylesheet">
     <style>
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: #fff7ed; overflow: hidden; touch-action: manipulation; }
-        .font-comic { font-family: 'Jua', sans-serif; }
-        @keyframes float { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-5px) rotate(5deg); } 100% { transform: translateY(0px) rotate(0deg); } }
-        .btn-theme { animation: float 2.5s infinite ease-in-out; cursor: pointer; transition: all 0.2s; }
-        .btn-theme:active { transform: scale(0.9); }
-        .text-box { background-color: rgba(255, 255, 255, 0.98); border-radius: 20px 20px 0 0; box-shadow: 0 -4px 15px rgba(0,0,0,0.1); }
-        .img-container { width: 100%; height: 100%; background-color: #fef3c7; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
-        .img-cover { width: 100%; height: 100%; object-fit: cover; }
-        .img-fit { width: 100%; height: 100%; object-fit: contain; }
-        .fade-in { animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #fff7ed;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .font-comic {
+            font-family: 'Jua', sans-serif;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-5px) rotate(5deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+
+        .btn-theme {
+            animation: float 2.5s infinite ease-in-out;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-theme:active {
+            transform: scale(0.9);
+        }
+
+        .text-box {
+            background-color: rgba(255, 255, 255, 0.98);
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .img-container {
+            width: 100%;
+            height: 100%;
+            background-color: #fef3c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .img-fit {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
         /* 캐릭터 색상 지정 */
-        .char-baekhap { color: #15803d; font-weight: 700; } /* green-700 */
-        .char-joyul { color: #0ea5e9; font-weight: 700; }    /* sky-500 */
-        
+        .char-baekhap {
+            color: #15803d;
+            font-weight: 700;
+        }
+
+        /* green-700 */
+        .char-joyul {
+            color: #0ea5e9;
+            font-weight: 700;
+        }
+
+        /* sky-500 */
+
         /* 스크롤바 숨기기 (깔끔한 텍스트뷰) */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body class="h-screen w-screen flex flex-col justify-center items-center">
-    <div id="app" class="w-full h-full max-w-md bg-white relative shadow-2xl overflow-hidden flex flex-col border-x border-orange-100"></div>
+    <div id="app"
+        class="w-full h-full max-w-md bg-white relative shadow-2xl overflow-hidden flex flex-col border-x border-orange-100">
+    </div>
     <script>
         // *** AI 데이터 생성 영역 ***
         // 이미지 키워드: baekhap
         // 구조: 표지(0) -> 등장인물(1) -> 1~6장(2~7) -> 퀴즈인트로(8) -> 엔딩(9)
-        
+
         const storyData = [
             // 0. 표지
             {
@@ -169,22 +257,22 @@
                 explanation: "지금은 2g이지만, 다 크면 40g이 넘는 듬직한 어른이 된단다. 밥 잘 먹고 쑥쑥 클게!"
             }
         ];
-        
-        const THEME_EMOJI = "🦎"; 
+
+        const THEME_EMOJI = "🦎";
 
         // --- 구동 로직 ---
         let currentState = { pageIndex: 0, quizIndex: 0, quizStatus: 'question', lastAnswer: null };
         const app = document.getElementById('app');
 
         function render() {
-            app.innerHTML = ''; 
+            app.innerHTML = '';
             // pageIndex가 데이터 길이보다 작으면 일반 페이지 (표지, 스토리, 인트로, 엔딩 등)
             if (currentState.pageIndex < storyData.length) {
                 const page = storyData[currentState.pageIndex];
                 if (page.type === 'cover') renderCover(page);
                 else if (page.type === 'ending') renderEnding(page);
                 else renderStoryPage(page, page.type === 'quiz_intro');
-            } 
+            }
             // pageIndex가 데이터 길이와 같으면 퀴즈 모드 실행
             else if (currentState.pageIndex === storyData.length) {
                 renderQuiz();
@@ -231,7 +319,7 @@
             const div = document.createElement('div');
             div.className = "w-full h-full flex flex-col bg-white fade-in";
             const imgHtml = `<div class="flex-1 img-container relative border-b-4 border-orange-200"><img src="${data.image}" class="img-fit" alt="삽화" onerror="this.parentElement.innerHTML='<div class=\\'flex flex-col items-center justify-center h-full text-gray-400\\'>이미지 준비중<br>${data.image}</div>'"></div>`;
-            
+
             const textHtml = `
                 <div class="h-[33%] flex flex-col relative bg-[#fff7ed]">
                     <div class="flex-1 p-6 overflow-y-auto no-scrollbar text-box -mt-6 z-10 text-lg leading-relaxed text-gray-800 border-t border-orange-50">
@@ -241,10 +329,10 @@
                     </div>
                     <div class="h-20 bg-[#fff7ed] flex justify-between items-center px-6 border-t border-orange-200 z-20">
                         <div onclick="prevPage()" class="flex flex-col items-center cursor-pointer text-orange-300 hover:text-orange-500 transition"><span class="text-2xl opacity-60">⏪</span><span class="text-xs font-bold mt-1">이전</span></div>
-                        ${isQuizIntro ? 
-                            `<div onclick="startQuiz()" class="cursor-pointer text-green-600 flex flex-col items-center btn-theme"><div class="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg border-4 border-green-200">?</div><span class="text-xs font-bold mt-1">퀴즈 풀기!</span></div>` : 
-                            `<div onclick="nextPage()" class="btn-theme flex flex-col items-center text-orange-500"><span class="text-4xl filter drop-shadow-md">${THEME_EMOJI}</span><span class="text-xs font-bold mt-1 text-orange-600">다음</span></div>`
-                        }
+                        ${isQuizIntro ?
+                    `<div onclick="startQuiz()" class="cursor-pointer text-green-600 flex flex-col items-center btn-theme"><div class="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg border-4 border-green-200">?</div><span class="text-xs font-bold mt-1">퀴즈 풀기!</span></div>` :
+                    `<div onclick="nextPage()" class="btn-theme flex flex-col items-center text-orange-500"><span class="text-4xl filter drop-shadow-md">${THEME_EMOJI}</span><span class="text-xs font-bold mt-1 text-orange-600">다음</span></div>`
+                }
                     </div>
                 </div>
             `;
@@ -254,16 +342,16 @@
 
         function renderQuiz() {
             // 퀴즈 종료 시 마지막 페이지(엔딩, storyData.length - 1)로 이동
-            if (currentState.quizIndex >= quizData.length) { 
-                currentState.pageIndex = storyData.length - 1; 
-                render(); 
-                return; 
+            if (currentState.quizIndex >= quizData.length) {
+                currentState.pageIndex = storyData.length - 1;
+                render();
+                return;
             }
 
             const currentQ = quizData[currentState.quizIndex];
             const div = document.createElement('div');
             div.className = "w-full h-full flex flex-col bg-orange-50 fade-in";
-            
+
             if (currentState.quizStatus === 'question') {
                 div.innerHTML = `<div class="flex-1 flex flex-col items-center justify-center p-6 text-center"><span class="text-green-600 font-bold text-xl mb-4 bg-green-100 px-4 py-1 rounded-full border border-green-200 shadow-sm">문제 ${currentState.quizIndex + 1} / ${quizData.length}</span><div class="bg-white p-8 rounded-3xl shadow-xl w-full mb-8 border-4 border-orange-100 relative"><div class="absolute -top-6 left-1/2 transform -translate-x-1/2 text-5xl">🦎</div><p class="text-2xl font-bold break-keep text-gray-800 leading-normal mt-4">${currentQ.question}</p></div><div class="flex gap-6 justify-center"><button onclick="checkAnswer(true)" class="w-24 h-24 bg-blue-500 rounded-full text-white text-5xl font-black shadow-[0_6px_0_rgb(29,78,216)] active:shadow-none active:translate-y-1 transition-all border-4 border-blue-400">O</button><button onclick="checkAnswer(false)" class="w-24 h-24 bg-red-500 rounded-full text-white text-5xl font-black shadow-[0_6px_0_rgb(185,28,28)] active:shadow-none active:translate-y-1 transition-all border-4 border-red-400">X</button></div></div>`;
             } else if (currentState.quizStatus === 'result') {
@@ -277,8 +365,8 @@
             app.appendChild(div);
         }
 
-        function nextPage() { if (currentState.pageIndex < storyData.length) { currentState.pageIndex++; render(); }}
-        function prevPage() { if (currentState.pageIndex > 0) { currentState.pageIndex--; render(); }}
+        function nextPage() { if (currentState.pageIndex < storyData.length) { currentState.pageIndex++; render(); } }
+        function prevPage() { if (currentState.pageIndex > 0) { currentState.pageIndex--; render(); } }
         // 퀴즈 시작 시 pageIndex를 배열 길이(가상 인덱스)로 설정
         function startQuiz() { currentState.pageIndex = storyData.length; currentState.quizIndex = 0; currentState.quizStatus = 'question'; render(); }
         function checkAnswer(ans) { currentState.lastAnswer = ans; currentState.quizStatus = 'result'; render(); }
@@ -288,6 +376,7 @@
 
         render();
     </script>
-        <a href="index.html" class="back-button">🏠</a>
+    <a href="index.html" class="back-button">🏠</a>
 </body>
+
 </html>
