@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>율이의 여행시리즈: 율이의 과학여행</title>
+    <title>율이의 과학여행</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap"
         rel="stylesheet">
@@ -16,22 +16,15 @@
             touch-action: manipulation;
         }
 
-        .font-comic {
+        /* 아이 학습만화 스타일 고딕체 적용 (Jua) */
+        .font-comic, h2, .dialogue-name {
             font-family: 'Jua', sans-serif;
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(0px) rotate(0deg);
-            }
-
-            50% {
-                transform: translateY(-5px) rotate(5deg);
-            }
-
-            100% {
-                transform: translateY(0px) rotate(0deg);
-            }
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
         }
 
         .btn-theme {
@@ -78,20 +71,29 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        /* 대사 간격 조정 */
+        /* 대사 스타일 */
         .dialogue-box p {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
             word-break: keep-all;
+            line-height: 1.6;
         }
+
+        .dialogue-name {
+            font-size: 1.1rem;
+            margin-right: 4px;
+        }
+
+        /* 캐릭터 색상 지정 */
+        .char-baekhap { color: #15803d; } /* Green */
+        .char-joyul { color: #0ea5e9; }    /* Sky */
+        .char-toto { color: #ec4899; }     /* Pink */
+        .char-teacher { color: #7c3aed; }  /* Purple */
+        .char-hwiseo { color: #f97316; }   /* Orange */
+        .char-algae { color: #059669; }    /* Emerald */
 
         .scene-divider {
             text-align: center;
@@ -109,26 +111,41 @@
             padding: 0 4px;
             border-radius: 4px;
         }
+
+        /* 스크롤바 숨기기 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 홈 버튼 스타일 */
+        .back-button {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 50px; height: 50px; background: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border: 2px solid #fdba74; z-index: 50; text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .back-button:active { transform: translateX(-50%) scale(0.9); }
     </style>
-    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="h-screen w-screen flex flex-col justify-center items-center">
     <div id="app"
         class="w-full h-full max-w-md bg-white relative shadow-2xl overflow-hidden flex flex-col border-x border-orange-100">
     </div>
+
     <script>
         // *** AI 데이터 생성 영역 ***
         // 이미지 키워드: images/moss
         const storyData = [
-            // 표지
+            // 0. 표지
             {
                 type: 'cover',
                 image: 'images/moss0.jpg',
                 title: '율이의 과학여행',
                 sub: '아빠! 최초의 식물은 어딨어?'
             },
-            // 등장인물 소개
+            // 1. 등장인물 소개
             {
                 type: 'intro',
                 image: 'images/moss1.jpg',
@@ -136,13 +153,15 @@
                 sub: '이번 여행을 함께할 친구들이에요!',
                 content: `
                     <div class="space-y-4">
-                        <p><strong class="text-sky-500 text-lg">조율 (8세)</strong><br>청곡초 1학년 5반. 자연을 사랑하고 보호하는 멋진 소녀. 궁금한 건 못 참는 호기심 대장.</p>
-                        <p><strong class="text-pink-500 text-lg">토토</strong><br>율이가 안고 다니는 애착 토끼 인형. 율이의 궁금증을 해결해 주는 똑똑한 해결사.</p>
-                        <p><strong class="text-green-600 text-lg">백합</strong><br>율이 어깨 위에 잘 붙어 있는 반려 도마뱀. 꼬리가 밝아지면 시공간을 이동하는 신비한 도마뱀.</p>
+                        <p><strong class="dialogue-name text-sky-500">조율 (8세)</strong><br>청곡초 1학년 5반. 자연을 사랑하고 보호하는 멋진 소녀. 궁금한 건 못 참는 호기심 대장.</p>
+                        <p><strong class="dialogue-name text-pink-500">토토</strong><br>율이가 안고 다니는 애착 토끼 인형. 율이의 궁금증을 해결해 주는 똑똑한 해결사.</p>
+                        <p><strong class="dialogue-name text-green-600">백합</strong><br>율이 어깨 위에 잘 붙어 있는 반려 도마뱀. 꼬리가 밝아지면 시공간을 이동하는 신비한 도마뱀.</p>
+                        <p><strong class="dialogue-name text-orange-500">휘서(8세)</strong><br>청곡초 1학년 5반. 발표도 잘하고 똑똑한 율이의 베프.</p>
+
                     </div>
                 `
             },
-            // 제1장
+            // 2. 제1장
             {
                 type: 'story',
                 image: 'images/moss2.jpg',
@@ -150,113 +169,122 @@
                 sub: '숲 체험과 토토의 어려운 설명',
                 content: `
                     <div class="dialogue-box">
-                        <p><strong class="text-gray-600">선생님</strong>: 자, 여러분! 숲에는 많은 식물이 있죠? 그럼 '식물'이 도대체 뭘까요?</p>
-                        <p><strong class="text-gray-700">휘서</strong>: (손을 번쩍 들며) 저요! 광합성을 하고 움직이지 않는 거요!</p>
-                        <p><strong class="text-gray-600">선생님</strong>: 오~ 아주 똑똑한 대답이네요!</p>
+                        <p><strong class="dialogue-name char-teacher">선생님</strong>: 자, 여러분! 숲에는 많은 식물이 있죠? 그럼 '식물'이 도대체 뭘까요?</p>
+                        <p><strong class="dialogue-name char-hwiseo">휘서</strong>: (손을 번쩍 들며) 저요! 광합성을 하고 움직이지 않는 거요!</p>
+                        <p><strong class="dialogue-name char-teacher">선생님</strong>: 오~ 아주 똑똑한 대답이네요!</p>
                         
                         <div class="scene-divider">* * *</div>
 
-                        <p><strong class="text-pink-500">토토</strong>: (속닥속닥) 율아, 사실 식물의 정의는 더 복잡해. 엽록체를 가진 조상에서 진화한 하나의 혈통을 식물로 정의하면, 육상식물에 녹조류, 홍조류, 회청조류까지 다 포함돼.</p>
-                        <p><strong class="text-pink-500">토토</strong>: 조금 좁게는 '녹색식물'만 쳐서 육상식물과 녹조류(파래, 청각)를 말하기도 하고, 더 좁게는 땅에 사는 '유배식물'만 말하기도 하는데...</p>
-                        <p><strong class="text-sky-500">율</strong>: (식은땀) 으아아... 무슨 말이야? 녹조류? 회청조류?</p>
-
-                        <div class="scene-divider">* * *</div>
-
-                        <p><strong class="text-sky-500">율</strong>: 난 그냥 나무, 꽃, 풀만 식물 같은데... 어려운 거 말고, 땅에서 볼 수 있는 식물만 알고 싶어!</p>
-                        <p><strong class="text-pink-500">토토</strong>: (머쓱하게 땀 삐질) 하하, 그래? 그럼 다른 건 다음에 하자!</p>
-                        <p><strong class="text-pink-500">토토</strong>: 그럼 최초의 육상 식물이 누군지 직접 보러 갈까? 백합아, 준비해!</p>
-                        <p><strong class="text-green-600">백합</strong>: (씨익 웃으며) (꼬리가 번쩍!)</p>
+                        <p><strong class="dialogue-name char-toto">토토</strong>: (속닥속닥) 율아, 사실 식물의 정의는 더 복잡해. 엽록체를 가진 조상에서 진화한 하나의 혈통을 식물로 정의하면, 육상식물에 녹조류, 홍조류, 회청조류까지 다 포함돼.</p>
                     </div>
                 `
             },
-            // 제2장
+            // 3. 제2장
             {
                 type: 'story',
                 image: 'images/moss3.jpg',
-                title: '제2장: 삭막한 땅, 초록색 바다',
-                sub: '4억 5천만 년 전 지구로!',
+                title: '제2장: 너무 어려운 식물의 세계',
+                sub: '율이의 혼란과 출발',
                 content: `
                     <div class="dialogue-box">
-                        <p><strong class="text-sky-500">율</strong>: 으악! 여기가 어디야? 나무도 없고 꽃도 없어! 그냥 돌덩이 세상이잖아?</p>
-                        <p><strong class="text-pink-500">토토</strong>: 여긴 아주 먼 옛날이야. 저기 바다를 봐. 온통 초록색이지? 바닷속엔 식물의 조상인 '녹조류'들이 가득해.</p>
+                        <p><strong class="dialogue-name char-toto">토토</strong>: 조금 좁게는 '녹색식물'만 쳐서 육상식물과 녹조류를 말하기도 하고, 더 좁게는 땅에 사는 '유배식물'만 말하기도 하는데...</p>
+                        <p><strong class="dialogue-name char-joyul">율</strong>: (머리를 감싸쥐며) 으아아... 무슨 말이야? 녹조류? 회청조류?</p>
                         
                         <div class="scene-divider">* * *</div>
 
-                        <p><strong class="text-green-700">녹조류</strong>: 영차, 영차! 나도 땅 구경 할래!</p>
-                        <p><strong class="text-green-700">녹조류</strong>: 으악! 너무 건조해! 목말라 죽겠어! (바사삭)</p>
-                        <p><strong class="text-sky-500">율</strong>: 저런! 땅 위는 너무 건조해서 물속 친구들이 살 수가 없나 봐.</p>
+                        <p><strong class="dialogue-name char-joyul">율</strong>: 난 그냥 나무, 꽃, 풀만 식물 같은데... 어려운 거 말고, 땅에서 볼 수 있는 식물만 알고 싶어!</p>
+                        <p><strong class="dialogue-name char-toto">토토</strong>: (땀 삐질) 하하, 그래? 그럼 다른 건 다음에 하자!</p>
+                        <p><strong class="dialogue-name char-toto">토토</strong>: 그럼 최초의 육상 식물이 누군지 직접 보러 갈까? 백합아, 준비해!</p>
+                        <p><strong class="dialogue-name char-baekhap">백합</strong>: (꼬리가 번쩍!)</p>
                     </div>
                 `
             },
-            // 제3장
+            // 4. 제3장
             {
                 type: 'story',
                 image: 'images/moss4.jpg',
-                title: '제3장: 최초의 육상 식물, 이끼의 등장!',
-                sub: '비옷 입고 마스크 쓴 슈퍼 히어로?',
+                title: '제3장: 삭막한 땅, 초록색 바다',
+                sub: '4억 5천만 년 전 지구로!',
                 content: `
                     <div class="dialogue-box">
-                        <p><strong class="text-pink-500">토토</strong>: 짜잔! 그때 등장한 영웅이 바로 <span class="highlight">'이끼(선태식물)'</span>야!</p>
-                        <p><strong class="text-pink-500">토토</strong>: 몸이 마르지 않게 <span class="highlight">'투명 비옷(큐티클)'</span>을 입고, 숨을 쉴 수 있는 <span class="highlight">'숨구멍(기공)'</span>을 뚫었지.</p>
-                        <p><strong class="text-sky-500">율</strong>: 우와! 작지만 준비성이 철저하네! 비옷을 입으면 물은 안 마르지만, 숨쉬기가 답답해서 구멍을 뚫었구나!</p>
+                        <p><strong class="dialogue-name char-joyul">율</strong>: 으악! 여기가 어디야? 나무도 없고 꽃도 없어! 그냥 돌덩이 세상이잖아?</p>
+                        <p><strong class="dialogue-name char-toto">토토</strong>: 여긴 아주 먼 옛날이야. 저기 바다를 봐. 온통 초록색이지? 바닷속엔 식물의 조상인 '녹조류'들이 가득해.</p>
                         
                         <div class="scene-divider">* * *</div>
 
-                        <p><strong class="text-sky-500">율</strong>: 근데 얘는 왜 이렇게 키가 작아? 나무처럼 쑥쑥 안 커?</p>
-                        <p><strong class="text-pink-500">토토</strong>: 아직 물을 빨아올리는 빨대(물관)가 없어서 그래. 대신 땅에 납작 붙어서 물기를 온몸으로 흡수하는 거야.</p>
+                        <p><strong class="dialogue-name char-algae">녹조류</strong>: 영차, 영차! 나도 땅 구경 할래! (육지로 기어 나온다)</p>
+                        <p><strong class="dialogue-name char-algae">녹조류</strong>: (바짝 마르며) 으악! 너무 건조해! 목말라 죽겠어!</p>
+                        <p><strong class="dialogue-name char-joyul">율</strong>: 저런! 땅 위는 너무 건조해서 물속 친구들이 살 수가 없나 봐.</p>
                     </div>
                 `
             },
-            // 제4장
+            // 5. 제4장
             {
                 type: 'story',
                 image: 'images/moss5.jpg',
-                title: '제4장: 캥거루 엄마를 닮았어 (유배식물)',
-                sub: '아기를 지켜라!',
+                title: '제4장: 최초의 육상 식물, 이끼의 등장!',
+                sub: '비옷 입고 마스크 쓴 슈퍼 히어로?',
                 content: `
                     <div class="dialogue-box">
-                        <p><strong class="text-pink-500">토토</strong>: 율아, 육상 식물의 가장 큰 비밀을 알려줄게. 바로 <span class="highlight">'캥거루 작전'</span>이야!</p>
-                        <p><strong class="text-sky-500">율</strong>: 캥거루? 식물이?</p>
-                        <p><strong class="text-pink-500">토토</strong>: 물속 식물은 알을 낳고 그냥 가버리지만, 땅 위 식물은 아기(배)가 튼튼해질 때까지 엄마 몸속에서 품어서 키워. 이걸 어려운 말로 <span class="highlight">'유배식물'</span>이라고 해.</p>
-
-                        <div class="scene-divider">* * *</div>
-
-                        <p><strong class="text-pink-500">토토</strong>: 이끼 할머니 덕분에 나중에 고사리 삼촌도 나오고, 꽃 언니도 나올 수 있었던 거야.</p>
-                        <p><strong class="text-sky-500">율</strong>: 아하! 이끼가 땅 위 식물들의 위대한 왕할머니였구나!</p>
-                    </div>
-                `
-            },
-            // 제5장
-            {
-                type: 'story',
-                image: 'images/moss6.jpg',
-                title: '제5장: 작지만 위대한 시작',
-                sub: '현실로 돌아온 숲과 율이의 깨달음',
-                content: `
-                    <div class="dialogue-box">
-                        <p><strong class="text-gray-600">선생님</strong>: 어? 율이가 뭘 그렇게 열심히 보고 있니?</p>
-                        <p><strong class="text-sky-500">율</strong>: 선생님! 여기 식물들의 왕할머니가 살고 있어요!</p>
-                        <p><strong class="text-gray-700">친구들</strong>: (웅성웅성) 왕할머니? 어디?</p>
+                        <p><strong class="dialogue-name char-toto">토토</strong>: 짜잔! 그때 등장한 영웅이 바로 <span class="highlight">'이끼(선태식물)'</span>야!</p>
+                        <p><strong class="dialogue-name char-toto">토토</strong>: 몸이 마르지 않게 <span class="highlight">'투명 비옷(큐티클)'</span>을 입고, 숨을 쉴 수 있는 <span class="highlight">'숨구멍(기공)'</span>을 뚫었지.</p>
+                        <p><strong class="dialogue-name char-joyul">율</strong>: 우와! 작지만 준비성이 철저하네! 비옷을 입으면 물은 안 마르지만, 숨쉬기가 답답해서 구멍을 뚫었구나!</p>
                         
                         <div class="scene-divider">* * *</div>
 
-                        <p><strong class="text-sky-500">율</strong>: (속마음) 작다고 무시해서 미안해. 네가 용감하게 땅으로 올라와줘서 우리가 예쁜 꽃도 보고 나무 그늘에서도 쉴 수 있는 거야. 고마워, 이끼야!</p>
-                        <p><strong class="text-sky-500">율</strong>: (소리 내어) 식물은... 아기를 소중하게 지키며 땅에 적응한 용감한 친구들이에요!</p>
+                        <p><strong class="dialogue-name char-joyul">율</strong>: 근데 얘는 왜 이렇게 키가 작아? 나무처럼 쑥쑥 안 커?</p>
+                        <p><strong class="dialogue-name char-toto">토토</strong>: 아직 물을 빨아올리는 빨대(물관)가 없어서 그래. 대신 땅에 납작 붙어서 물기를 온몸으로 흡수하는 거야.</p>
                     </div>
                 `
             },
-            // 퀴즈 인트로
+            // 6. 제5장
+            {
+                type: 'story',
+                image: 'images/moss6.jpg',
+                title: '제5장: 캥거루 엄마를 닮았어',
+                sub: '아기를 지켜라! (유배식물, 有胚植物)',
+                content: `
+                    <div class="dialogue-box">
+                        <p><strong class="dialogue-name char-toto">토토</strong>: 율아, 육상 식물의 가장 큰 비밀을 알려줄게. 바로 <span class="highlight">'캥거루처럼'</span>이야!</p>
+                        <p><strong class="dialogue-name char-joyul">율</strong>: 캥거루? 식물이?</p>
+                        <p><strong class="dialogue-name char-toto">토토</strong>: 물속 식물은 알을 낳고 그냥 가버리지만, 땅 위 식물은 아기(배)가 튼튼해질 때까지 엄마 몸속에서 품어서 키워. 이걸 어려운 말로 <span class="highlight">'유배식물(有胚植物, Embryophyte)'</span>이라고 해.</p>
+
+                        <div class="scene-divider">* * *</div>
+
+                        <p><strong class="dialogue-name char-toto">토토</strong>: 이끼 할머니 덕분에 나중에 고사리 삼촌도 나오고, 꽃 언니도 나올 수 있었던 거야.</p>
+                        <p><strong class="dialogue-name char-joyul">율</strong>: 아하! 이끼가 땅 위 식물들의 위대한 왕할머니였구나!</p>
+                    </div>
+                `
+            },
+            // 7. 제6장
+            {
+                type: 'story',
+                image: 'images/moss7.jpg',
+                title: '제6장: 작지만 위대한 시작',
+                sub: '다시 지금 세상으로',
+                content: `
+                    <div class="dialogue-box">
+                        <p><strong class="dialogue-name char-hwiseo">휘서</strong>: 율이야, 뭐 하고 있어?</p>
+                        <p><strong class="dialogue-name char-joyul">율</strong>: 휘서야! 여기 식물들의 왕할머니가 살고 있어!</p>
+                        
+                        <div class="scene-divider">* * *</div>
+
+                        <p><strong class="dialogue-name char-joyul">율</strong>: 이끼야, 작다고 무시해서 미안해. 네가 용감하게 땅으로 올라와줘서 우리가 예쁜 꽃도 보고 나무 그늘에서도 쉴 수 있는 거야. 고마워, 이끼야!</p>
+                    </div>
+                `
+            },
+            // 8. 퀴즈 인트로
             {
                 type: 'quiz_intro',
-                image: 'images/moss7.jpg',
-                title: '율이의 퀴즈 타임!',
+                image: 'images/moss8.jpg',
+                title: '율이의 Quiz Time!',
                 sub: '배운 내용을 퀴즈로 확인해볼까요?',
-                content: '<p class="text-center text-lg mt-4">율이와 토토가 알려준 최초의 식물 이야기!<br>잘 기억하고 있나요?<br><br><strong>OX 퀴즈 3문제</strong>가 기다리고 있어요!<br>준비하시고~ 쏘세요! 🌿✨</p>'
+                content: '<p class="text-center text-lg mt-4">율이와 토토가 알려준 최초의 식물 이야기!<br><br><strong>OX 퀴즈 3문제</strong>가 기다리고 있어요!</p>'
             },
-            // 엔딩
+            // 9. 엔딩
             {
                 type: 'ending',
-                image: 'images/moss8.jpg',
+                image: 'images/moss9.jpg',
                 title: '끝',
                 sub: ''
             }
@@ -264,38 +292,38 @@
 
         const quizData = [
             {
-                question: "미역이나 파래 같은 '녹조류'는 처음부터 땅 위에서 살았다?",
+                question: "물속에 살던 녹조류는 건조한 땅에서도 아무 문제 없이 잘 살았다?",
                 answer: false,
-                explanation: "녹조류는 식물의 조상이지만 물속에서 살았어. 땅이 너무 건조해서 못 올라왔대."
+                explanation: "녹조류는 몸을 보호하는 능력이 없어서 땅 위로 나오면 금방 말라버렸어."
             },
             {
-                question: "최초의 육상 식물인 '이끼'는 몸이 마르지 않게 비옷(큐티클)을 입었다?",
+                question: "최초의 육상 식물인 '이끼'는 몸이 마르지 않게 '투명 비옷(큐티클)'을 입고 있다?",
                 answer: true,
-                explanation: "맨몸으로 나오면 말라버리니까 투명 비옷도 입고, 숨 쉬는 구멍도 만들어서 땅 위로 올라왔어."
+                explanation: "큐티클이라는 비옷으로 수분이 날아가는 걸 막고, 기공이라는 구멍으로 숨을 쉬었단다."
             },
             {
-                question: "땅에 사는 식물(유배식물)은 캥거루처럼 아기를 엄마 몸속에서 키운다?",
+                question: "땅 위 식물들은 캥거루처럼 아기(배)를 엄마 몸속에서 보호하며 키운다?",
                 answer: true,
-                explanation: "맞았어! 아기(배)가 튼튼해질 때까지 엄마가 꼭 안아서 보호해 줘. 그래서 '유배식물'이라고 부른대!"
+                explanation: "그래서 '유배식물(有胚植物, Embryophytes)'이라고 불러. 척박한 땅에서 아기를 지키기 위한 멋진 작전이지!"
             }
         ];
 
         const THEME_EMOJI = "🌿";
 
-        // --- 로직 (수정된 버전) ---
+        // --- 구동 로직 ---
         let currentState = { pageIndex: 0, quizIndex: 0, quizStatus: 'question', lastAnswer: null, inQuiz: false };
         const app = document.getElementById('app');
 
         function render() {
             app.innerHTML = '';
 
-            // 1순위: 퀴즈 모드일 경우 퀴즈 렌더링
+            // 1순위: 퀴즈 모드일 경우
             if (currentState.inQuiz) {
                 renderQuiz();
                 return;
             }
 
-            // 2순위: 스토리 페이지 (표지, 본문, 퀴즈인트로, 엔딩)
+            // 2순위: 스토리 페이지
             if (currentState.pageIndex < storyData.length) {
                 const page = storyData[currentState.pageIndex];
                 if (page.type === 'cover') renderCover(page);
@@ -310,7 +338,9 @@
             div.onclick = nextPage;
             div.innerHTML = `
                 <div class="img-container"><img src="${data.image}" class="img-cover" alt="표지" onerror="this.parentElement.innerHTML='<div class=\\'flex flex-col items-center justify-center h-full text-gray-500\\'>이미지 준비중<br>${data.image}</div>'"></div>
-                <div class="absolute bottom-10 w-full text-center text-white font-comic animate-pulse text-xl drop-shadow-md bg-black/20 py-2">화면을 탭하여 시작하기</div>
+                <div class="absolute bottom-10 w-full text-center text-white font-comic animate-pulse text-xl drop-shadow-md bg-black/30 py-3 backdrop-blur-sm rounded-t-xl mx-auto w-3/4 left-0 right-0">
+                    <span class="mr-2">${THEME_EMOJI}</span>화면을 탭하여 시작하기
+                </div>
             `;
             app.appendChild(div);
         }
@@ -321,7 +351,9 @@
             div.onclick = restart;
             div.innerHTML = `
                 <div class="img-container"><img src="${data.image}" class="img-cover" alt="엔딩" onerror="this.parentElement.innerHTML='<div class=\\'flex flex-col items-center justify-center h-full text-gray-500\\'>이미지 준비중<br>${data.image}</div>'"></div>
-                <div class="absolute bottom-10 w-full text-center text-white font-comic animate-pulse text-xl drop-shadow-md bg-black/20 py-2">처음으로 돌아가기 🔄</div>
+                <div class="absolute bottom-10 w-full text-center text-white font-comic animate-pulse text-xl drop-shadow-md bg-black/30 py-3 backdrop-blur-sm rounded-full mx-auto w-3/4 left-0 right-0">
+                    여행 완료! (처음으로 🔄)
+                </div>
             `;
             app.appendChild(div);
         }
@@ -332,17 +364,17 @@
             const imgHtml = `<div class="flex-1 img-container relative border-b-4 border-orange-200"><img src="${data.image}" class="img-fit" alt="삽화" onerror="this.parentElement.innerHTML='<div class=\\'flex flex-col items-center justify-center h-full text-gray-400\\'>이미지 준비중<br>${data.image}</div>'"></div>`;
 
             const textHtml = `
-                <div class="h-[33%] flex flex-col relative">
-                    <div class="flex-1 p-6 overflow-y-auto text-box -mt-6 z-10 text-lg leading-relaxed text-gray-800">
-                        ${data.title ? `<h2 class="font-comic text-2xl text-orange-500 mb-1">${data.title}</h2>` : ''}
-                        ${data.sub ? `<p class="text-sm text-gray-500 mb-4">${data.sub}</p>` : ''}
-                        <div class="space-y-2">${data.content}</div>
+                <div class="h-[35%] flex flex-col relative bg-[#fff7ed]">
+                    <div class="flex-1 p-6 overflow-y-auto no-scrollbar text-box -mt-6 z-10 text-lg leading-relaxed text-gray-800 border-t border-orange-50">
+                        ${data.title ? `<h2 class="font-comic text-2xl text-orange-600 mb-1 flex items-center gap-2">${data.title}</h2>` : ''}
+                        ${data.sub ? `<p class="text-sm text-gray-500 mb-4 font-bold inline-block bg-orange-100 px-2 py-0.5 rounded text-orange-600">🏷️ ${data.sub}</p>` : ''}
+                        <div class="space-y-1 font-medium">${data.content}</div>
                     </div>
-                    <div class="h-20 bg-white flex justify-between items-center px-8 border-t border-orange-100 z-20">
-                        <div onclick="prevPage()" class="flex flex-col items-center cursor-pointer text-gray-400 hover:text-gray-600 transition"><span class="text-2xl opacity-60">⏪</span><span class="text-xs font-bold mt-1">이전</span></div>
+                    <div class="h-20 bg-[#fff7ed] flex justify-between items-center px-6 border-t border-orange-200 z-20 pb-2">
+                        <div onclick="prevPage()" class="flex flex-col items-center cursor-pointer text-orange-300 hover:text-orange-500 transition"><span class="text-2xl opacity-60">🔙</span><span class="text-xs font-bold mt-1">이전</span></div>
                         ${isQuizIntro ?
-                    `<div onclick="startQuiz()" class="cursor-pointer text-pink-500 flex flex-col items-center"><div class="w-14 h-14 bg-pink-500 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg border-4 border-pink-200">?</div><span class="text-xs font-bold mt-1">퀴즈 풀기!</span></div>` :
-                    `<div onclick="nextPage()" class="btn-theme flex flex-col items-center text-green-600"><span class="text-4xl filter drop-shadow-md">${THEME_EMOJI}</span><span class="text-xs font-bold mt-1 text-green-700">다음</span></div>`
+                    `<div onclick="startQuiz()" class="cursor-pointer text-green-600 flex flex-col items-center btn-theme"><div class="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg border-4 border-green-200">?</div><span class="text-xs font-bold mt-1">퀴즈 풀기!</span></div>` :
+                    `<div onclick="nextPage()" class="btn-theme flex flex-col items-center text-orange-500"><span class="text-4xl filter drop-shadow-md">${THEME_EMOJI}</span><span class="text-xs font-bold mt-1 text-orange-600">다음</span></div>`
                 }
                     </div>
                 </div>
@@ -354,24 +386,24 @@
         function renderQuiz() {
             if (currentState.quizIndex >= quizData.length) {
                 currentState.inQuiz = false;
-                currentState.pageIndex++;
+                currentState.pageIndex++; // 퀴즈 인트로 다음 페이지(엔딩)로
                 render();
                 return;
             }
 
             const currentQ = quizData[currentState.quizIndex];
             const div = document.createElement('div');
-            div.className = "w-full h-full flex flex-col bg-yellow-50 fade-in";
+            div.className = "w-full h-full flex flex-col bg-orange-50 fade-in";
 
             if (currentState.quizStatus === 'question') {
-                div.innerHTML = `<div class="flex-1 flex flex-col items-center justify-center p-6 text-center"><span class="text-pink-500 font-bold text-xl mb-4 bg-pink-100 px-4 py-1 rounded-full">문제 ${currentState.quizIndex + 1} / 3</span><div class="bg-white p-8 rounded-2xl shadow-xl w-full mb-8 border-2 border-yellow-300"><p class="text-2xl font-bold break-keep text-gray-800">${currentQ.question}</p></div><div class="flex gap-6 justify-center"><button onclick="checkAnswer(true)" class="w-24 h-24 bg-blue-500 rounded-full text-white text-5xl font-black shadow-lg">O</button><button onclick="checkAnswer(false)" class="w-24 h-24 bg-red-500 rounded-full text-white text-5xl font-black shadow-lg">X</button></div></div>`;
+                div.innerHTML = `<div class="flex-1 flex flex-col items-center justify-center p-6 text-center"><span class="text-green-600 font-bold text-xl mb-4 bg-green-100 px-4 py-1 rounded-full border border-green-200 shadow-sm">문제 ${currentState.quizIndex + 1} / ${quizData.length}</span><div class="bg-white p-8 rounded-3xl shadow-xl w-full mb-8 border-4 border-orange-100 relative"><div class="absolute -top-6 left-1/2 transform -translate-x-1/2 text-5xl font-comic text-orange-400">Q</div><p class="text-2xl font-bold break-keep text-gray-800 leading-normal mt-4">${currentQ.question}</p></div><div class="flex gap-6 justify-center"><button onclick="checkAnswer(true)" class="w-24 h-24 bg-blue-500 rounded-full text-white text-5xl font-black shadow-[0_6px_0_rgb(29,78,216)] active:shadow-none active:translate-y-1 transition-all border-4 border-blue-400">O</button><button onclick="checkAnswer(false)" class="w-24 h-24 bg-red-500 rounded-full text-white text-5xl font-black shadow-[0_6px_0_rgb(185,28,28)] active:shadow-none active:translate-y-1 transition-all border-4 border-red-400">X</button></div></div>`;
             } else if (currentState.quizStatus === 'result') {
                 const isCorrect = currentState.lastAnswer === currentQ.answer;
                 const emoji = isCorrect ? `🎉${THEME_EMOJI}🎉` : '🤔💦';
-                div.innerHTML = `<div class="w-full h-full ${isCorrect ? 'bg-green-500' : 'bg-orange-400'} flex flex-col items-center justify-center text-white cursor-pointer" onclick="showExplanation()"><div class="text-8xl mb-6 animate-bounce">${emoji}</div><h2 class="text-4xl font-comic mb-4">${isCorrect ? '정답!' : '땡!'}</h2><p class="animate-pulse">탭하여 해설 보기</p></div>`;
+                div.innerHTML = `<div class="w-full h-full ${isCorrect ? 'bg-green-500' : 'bg-orange-400'} flex flex-col items-center justify-center text-white cursor-pointer" onclick="showExplanation()"><div class="text-8xl mb-6 animate-bounce">${emoji}</div><h2 class="text-5xl font-comic mb-4 drop-shadow-md">${isCorrect ? '정답!' : '땡!'}</h2><p class="animate-pulse text-xl opacity-90 font-medium">화면을 눌러 해설 보기</p></div>`;
             } else if (currentState.quizStatus === 'explanation') {
                 const isLast = currentState.quizIndex === quizData.length - 1;
-                div.innerHTML = `<div class="flex-1 flex flex-col p-6 bg-white cursor-pointer" onclick="nextQuizStep()"><div class="flex-1 flex flex-col justify-center items-center"><h3 class="text-2xl font-comic text-sky-600 mb-6">👧🏻 율이의 설명</h3><div class="bg-sky-50 p-6 rounded-xl border-2 border-sky-200 shadow-md relative"><div class="absolute -top-4 -left-2 text-4xl">💡</div><p class="text-xl font-medium text-gray-800 leading-relaxed word-keep">"${currentQ.explanation}"</p></div></div><div class="h-24 flex items-center justify-center"><div class="btn-theme flex flex-col items-center"><span class="text-4xl">${THEME_EMOJI}</span><span class="text-sm font-bold text-green-600 mt-1">${isLast ? "완료!" : "다음 문제"}</span></div></div></div>`;
+                div.innerHTML = `<div class="flex-1 flex flex-col p-6 bg-white cursor-pointer" onclick="nextQuizStep()"><div class="flex-1 flex flex-col justify-center items-center"><h3 class="text-2xl font-comic text-green-700 mb-6 flex items-center gap-2">🦎 해설</h3><div class="bg-green-50 p-6 rounded-2xl border-2 border-green-200 shadow-lg relative w-full"><div class="absolute -top-5 -left-2 text-5xl filter drop-shadow-sm">💡</div><p class="text-xl font-medium text-gray-800 leading-relaxed word-keep pl-2 mt-2">"${currentQ.explanation}"</p></div></div><div class="h-24 flex items-center justify-center"><div class="btn-theme flex flex-col items-center"><span class="text-5xl">${THEME_EMOJI}</span><span class="text-lg font-bold text-orange-600 mt-2">${isLast ? "결과 보기!" : "다음 문제"}</span></div></div></div>`;
             }
             app.appendChild(div);
         }
