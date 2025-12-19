@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>율이의 꿈 여행 : 성심당 이야기</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquareRound@master/nanumsquareround.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* 1학년 아이들이 읽기 편한 둥근 폰트 설정 */
+            font-family: 'NanumSquareRound', sans-serif;
+            background: linear-gradient(to bottom, #fff5f7 0%, #ffe4e9 50%, #fff5f7 100%);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            line-height: 1.8;
+            word-break: keep-all; /* 단어 단위로 줄바꿈 (가독성 향상) */
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            z-index: 1000;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b9d, #ffa8cc, #ff1744);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+        }
+
+        /* Container */
+        .story-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Full Screen Cover & End Image */
+        .full-screen-container {
+            width: 100%;
+            height: 100dvh; /* 아이폰 주소창 대응 dynamic viewport height */
+            overflow: hidden;
+            position: relative;
+        }
+
+        .full-screen-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 화면에 꽉 차게 조절 */
+            display: block;
+        }
+
+        /* Story Content */
+        .story-content {
+            padding: 60px 25px;
+        }
+
+        /* Title Section */
+        .story-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px dashed #ffe4e9;
+        }
+
+        .story-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #ff1744;
+            margin-bottom: 15px;
+        }
+
+        .story-subtitle {
+            font-size: 18px;
+            color: #666;
+            font-weight: 700;
+        }
+
+        .story-year {
+            font-size: 15px;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        /* Chapter */
+        .chapter {
+            margin-bottom: 80px;
+        }
+
+        .chapter-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 35px;
+            padding: 20px;
+            background: #fff5f7;
+            border-radius: 20px;
+            border-left: 8px solid #ff1744;
+        }
+
+        .chapter-emoji {
+            font-size: 40px;
+        }
+
+        .chapter-number {
+            font-size: 15px;
+            color: #ff6b9d;
+            font-weight: 800;
+        }
+
+        .chapter-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #333;
+        }
+
+        /* Story Text */
+        .story-text {
+            font-size: 20px; /* 1학년을 위해 크기 상향 */
+            color: #333;
+            line-height: 2.2;
+            margin-bottom: 25px;
+        }
+
+        .story-text.indent {
+            padding-left: 15px;
+            position: relative;
+        }
+
+        /* Dialogue */
+        .dialogue {
+            font-family: 'Gowun Dodum', sans-serif; /* 대화문은 조금 더 다정한 폰트 */
+            background: #fdf2f4;
+            padding: 25px;
+            border-radius: 25px;
+            margin: 30px 0;
+            font-size: 21px;
+            line-height: 1.8;
+            color: #444;
+            position: relative;
+        }
+
+        /* Highlights */
+        .highlight {
+            background: linear-gradient(transparent 65%, #fff176 65%);
+            font-weight: 800;
+        }
+
+        .emphasis {
+            color: #ff1744;
+            font-weight: 800;
+        }
+
+        .section-divider {
+            text-align: center;
+            margin: 50px 0;
+            color: #ffcad4;
+            font-size: 20px;
+            letter-spacing: 15px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 30px;
+            width: 85%;
+            max-width: 350px;
+            text-align: center;
+        }
+
+        .modal-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: 'NanumSquareRound', sans-serif;
+        }
+
+        .modal-btn-yes { background: #ff1744; color: white; }
+        .modal-btn-no { background: #eee; color: #666; margin-top: 10px; }
+
+        /* Story End Section */
+        .story-end-text {
+            padding: 80px 20px;
+            text-align: center;
+            background: white;
+        }
+
+        .story-end-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ff1744;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <a href="index.html" class="back-button">🏠</a>
+
+    <div class="modal-overlay" id="continueModal">
+        <div class="modal-content">
+            <h2 style="color:#ff1744; margin-bottom:15px;">📖 이어보기</h2>
+            <p style="margin-bottom:25px; line-height:1.6;">읽던 부분부터<br>계속 볼까요?</p>
+            <button class="modal-btn modal-btn-yes" onclick="continueReading()">네, 그럴래요!</button><br>
+            <button class="modal-btn modal-btn-no" onclick="startFromBeginning()">처음부터 볼래요</button>
+        </div>
+    </div>
+
+    <div class="story-container">
+        <div class="full-screen-container">
+            <img src="images/castle0.jpg" alt="표지" class="full-screen-img"
+                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221080%22 height=%221920%22%3E%3Crect width=%221080%22 height=%221920%22 fill=%22%23ffe4e9%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2260%22 text-anchor=%22middle%22 fill=%22%23ff1744%22 font-weight=%22bold%22%3E조율이의 딸기 성%3C/text%3E%3C/svg%3E'">
+        </div>
+
+        <div class="story-content">
+            <div class="story-header">
+                <h1 class="story-title">율이의 성심당 이야기</h1>
+                <p class="story-subtitle">미래의 성심당 대표 : 조율</p>
+                <p class="story-year">2025년 대전, 그리고 꿈의 시간</p>
+            </div>
+
+            <div class="chapter" id="chapter-1">오후 3:53 2025-12-19
+                <div class="chapter-header">
+                    <div class="chapter-emoji">🍓</div>
+                    <div>
+                        <div class="chapter-number">제1장</div>
+                        <div class="chapter-title">딸기 산과 조율이의 결심</div>
+                    </div>
+                </div>
+                <p class="story-text">2025년 겨울, 대전의 성심당 케익부띠끄 앞에는 긴 줄이 서 있었어. 꼬마 조율이도 엄마 손을 잡고 그 줄에 서 있었지.</p>
+                <div class="dialogue">"엄마, 우리 뭐 사러 온 거야?"<br>"응, 딸기가 산처럼 쌓여 있는 '딸기시루' 케이크란다."</div>
+                <p class="story-text"><span class="emphasis">'쿵!'</span> 무거운 케이크 상자를 받아 든 조율이는 깜짝 놀랐어. 케이크가 벽돌처럼 무거웠거든!</p>
+                <p class="story-text">집에 와서 한 입 먹어보니, 달콤한 생크림과 딸기가 입안에서 팡팡 터지는 거야. 조율이는 눈을 반짝이며 외쳤어.</p>
+                <div class="dialogue"><span class="emphasis">"나 결심했어! 나도 커서 성심당처럼 큰 빵집을 열 거야. 돈을 아주 많이 벌어서 수영장 있는 집에서 살 거야!"</span></div>
+            </div>
+
+            <div class="chapter" id="chapter-2">
+                <div class="chapter-header"><div class="chapter-emoji">📚</div><div><div class="chapter-number">제2장</div><div class="chapter-title">빵 굽는 마법사와 노트</div></div></div>
+                <p class="story-text">조율이는 멋진 사장님이 되기 위해 두 가지 공부를 열심히 했어.</p>
+                <p class="story-text">첫 번째는 <span class="highlight">'맛있는 빵 만들기'</span>였어. 밀가루와 이스트가 만나 부풀어 오르는 모습이 꼭 마법 같았지. 조율이는 실패해도 포기하지 않고 비밀 노트에 꼼꼼히 적었어.</p>
+                <p class="story-text">두 번째는 <span class="highlight">'지혜로운 대장 되기'</span>였어. 친구들과 사이좋게 지내고 마음을 얻는 법을 배웠단다.</p>
+            </div>
+
+            <div class="chapter" id="chapter-3">
+                <div class="chapter-header"><div class="chapter-emoji">🍞</div><div><div class="chapter-number">제3장</div><div class="chapter-title">신입 제빵사 조율</div></div></div>
+                <p class="story-text">어른이 된 조율이는 성심당에 들어갔어. "안녕하세요! 신입 제빵사 조율입니다!"</p>
+                <p class="story-text">어느 날, 트럭 한 대가 오더니 빵을 잔뜩 싣고 나가는 거야.</p>
+                <div class="dialogue">"어? 저 빵들은 왜 안 팔고 가져가요?"</div>
+                <div class="dialogue" style="background:#eef2ff; border-left-color:#4f46e5;">"조율아, 저건 배고픈 이웃들에게 나누어 줄 '사랑의 빵'이란다. 우리는 돈만 버는 게 아니라 마음을 나누는 거야."</div>
+            </div>
+
+            <div class="chapter" id="chapter-4">
+                <div class="chapter-header"><div class="chapter-emoji">🔥</div><div><div class="chapter-number">제4장</div><div class="chapter-title">잿더미 속에서 핀 꽃</div></div></div>
+                <p class="story-text">힘든 날도 있었어. 실수로 케이크를 망쳤을 때, 임영진 할아버지가 다가와 말씀하셨지.</p>
+                <div class="dialogue">"옛날에 빵집에 불이 났을 때, 직원들이 도망가지 않고 함께 잿더미를 치워주었단다. 평소에 우리가 마음을 나누었기 때문이야. <span class="highlight">돈보다 중요한 건 사람의 마음</span>이란다."</div>
+                <p class="story-text">조율이는 깨달았어. 진짜 부자는 혼자 사는 게 아니라 <span class="emphasis">'나를 도와주는 친구가 많은 사람'</span>이라는 걸 말이야.</p>
+            </div>
+
+            <div class="chapter" id="chapter-5">
+                <div class="chapter-header"><div class="chapter-emoji">🏰</div><div><div class="chapter-number">제5장</div><div class="chapter-title">세상에서 가장 큰 집</div></div></div>
+                <p class="story-text">조율이는 드디어 성심당의 대표가 되었어. 조율이는 으리으리한 성 대신 <span class="highlight">'모두가 행복한 빵집'</span>을 만들었지.</p>
+                <p class="story-text indent">🎉 직원들은 웃으며 일하고,</p>
+                <p class="story-text indent">🍰 손님들은 맛있는 빵을 싸게 먹고,</p>
+                <p class="story-text indent">💝 이웃들은 배부르게 빵을 나누어 먹었어.</p>
+                <div class="dialogue"><span class="emphasis">"여기가 바로 세상에서 가장 행복한 나의 대저택이야!"</span></div>
+            </div>
+
+            <div class="story-end-text">
+                <h2 class="story-end-title">- The story has ended for now,<br>but let's definitely meet in the future, Yul.  -</h2>
+                <p style="color:#999; margin-top:10px;">성심당의 대표, 미래의 조율이가 지금의 조율이에게✨</p>
+            </div>
+        </div>
+
+        <div class="full-screen-container">
+            <img src="images/castle1.jpg" alt="마지막" class="full-screen-img"
+                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221080%22 height=%221920%22%3E%3Crect width=%221080%22 height=%221920%22 fill=%22%23ffe4e9%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2240%22 text-anchor=%22middle%22 fill=%22%23ff1744%22 font-weight=%22bold%22%3E행복한 조율이의 꿈%3C/text%3E%3C/svg%3E'">
+        </div>
+    </div>
+
+    <script>
+        const STORY_ID = 'yul_story_castle_v2';
+        const progressFill = document.getElementById('progressFill');
+        const continueModal = document.getElementById('continueModal');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            progressFill.style.width = progress + '%';
+            
+            if (scrollTop > 200) localStorage.setItem(STORY_ID, scrollTop);
+            if (scrollTop >= scrollHeight - 50) localStorage.removeItem(STORY_ID);
+        });
+
+        window.addEventListener('load', () => {오후 1:10 2025-12-19            const saved = localStorage.getItem(STORY_ID);
+            if (saved) setTimeout(() => continueModal.classList.add('active'), 500);
+        });
+
+        function continueReading() {
+            const saved = localStorage.getItem(STORY_ID);
+            window.scrollTo({ top: parseInt(saved), behavior: 'smooth' });
+            continueModal.classList.remove('active');
+        }
+
+        function startFromBeginning() {
+            localStorage.removeItem(STORY_ID);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            continueModal.classList.remove('active');
+        }
+    </script>
+</body>
+</html>
