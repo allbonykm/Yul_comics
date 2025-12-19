@@ -9,242 +9,91 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquareRound@master/nanumsquareround.css">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* 기본 설정 및 폰트 적용 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            /* 1학년 아이들이 읽기 편한 둥근 폰트 설정 */
             font-family: 'NanumSquareRound', sans-serif;
             background: linear-gradient(to bottom, #fff5f7 0%, #ffe4e9 50%, #fff5f7 100%);
             overflow-x: hidden;
             scroll-behavior: smooth;
             line-height: 1.8;
-            word-break: keep-all; /* 단어 단위로 줄바꿈 (가독성 향상) */
+            word-break: keep-all;
         }
 
         /* Progress Bar */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.3);
-            z-index: 1000;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff6b9d, #ffa8cc, #ff1744);
-            width: 0%;
-            transition: width 0.1s ease;
-        }
+        .progress-bar { position: fixed; top: 0; left: 0; width: 100%; height: 6px; background: rgba(255, 255, 255, 0.3); z-index: 1000; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #ff6b9d, #ffa8cc, #ff1744); width: 0%; transition: width 0.1s ease; }
 
         /* Back Button */
-        .back-button {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 50px;
-            height: 50px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            text-decoration: none;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            z-index: 999;
-        }
+        .back-button { position: fixed; bottom: 20px; left: 20px; width: 50px; height: 50px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; text-decoration: none; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); z-index: 999; }
 
-        /* Container */
-        .story-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            min-height: 100vh;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
-        }
+        /* Container - 폭을 800px로 제한하고 중앙 정렬 */
+        .story-container { max-width: 800px; margin: 0 auto; background: white; min-height: 100vh; box-shadow: 0 0 30px rgba(0, 0, 0, 0.05); }
+        
+        /* 이미지 컨테이너 */
+        .full-screen-container { width: 100%; height: auto; min-height: 300px; overflow: hidden; position: relative; }
+        .full-screen-img { width: 100%; height: auto; display: block; object-fit: contain; }
+        /* 첫 표지만 꽉 차게 보이도록 설정 */
+        .hero-img { height: 100dvh; object-fit: cover; }
 
-        /* Full Screen Cover & End Image */
-        .full-screen-container {
-            width: 100%;
-            height: 100dvh; /* 아이폰 주소창 대응 dynamic viewport height */
-            overflow: hidden;
-            position: relative;
-        }
-
-        .full-screen-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* 화면에 꽉 차게 조절 */
-            display: block;
-        }
-
-        /* Story Content */
-        .story-content {
-            padding: 60px 25px;
-        }
-
-        /* Title Section */
-        .story-header {
-            text-align: center;
-            margin-bottom: 50px;
-            padding-bottom: 30px;
-            border-bottom: 2px dashed #ffe4e9;
-        }
-
-        .story-title {
-            font-size: 32px;
-            font-weight: 800;
-            color: #ff1744;
-            margin-bottom: 15px;
-        }
-
-        .story-subtitle {
-            font-size: 18px;
-            color: #666;
-            font-weight: 700;
-        }
-
-        .story-year {
-            font-size: 15px;
-            color: #aaa;
-            margin-top: 5px;
-        }
+        /* Story Content & Header */
+        .story-content { padding: 60px 25px; }
+        .story-header { text-align: center; margin-bottom: 50px; padding-bottom: 30px; border-bottom: 2px dashed #ffe4e9; }
+        .story-title { font-size: 32px; font-weight: 800; color: #ff1744; margin-bottom: 15px; }
+        .story-subtitle { font-size: 18px; color: #666; font-weight: 700; }
+        .story-year { font-size: 15px; color: #aaa; margin-top: 5px; }
 
         /* Chapter */
-        .chapter {
-            margin-bottom: 80px;
-        }
+        .chapter { margin-bottom: 80px; }
+        .chapter-header { display: flex; align-items: center; gap: 15px; margin-bottom: 35px; padding: 20px; background: #fff5f7; border-radius: 20px; border-left: 8px solid #ff1744; }
+        .chapter-emoji { font-size: 40px; }
+        .chapter-title { font-size: 24px; font-weight: 800; color: #333; }
 
-        .chapter-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 35px;
-            padding: 20px;
-            background: #fff5f7;
-            border-radius: 20px;
-            border-left: 8px solid #ff1744;
-        }
+        /* Story Text & Dialogue */
+        .story-text { font-size: 20px; color: #333; line-height: 2.2; margin-bottom: 25px; }
+        .dialogue { font-family: 'Gowun Dodum', sans-serif; background: #fdf2f4; padding: 25px; border-radius: 25px; margin: 30px 0; font-size: 21px; line-height: 1.8; color: #444; position: relative; }
+        .story-text ul { padding-left: 20px; margin-bottom: 25px; }
+        .story-text li { margin-bottom: 10px; list-style-type: disc; }
 
-        .chapter-emoji {
-            font-size: 40px;
-        }
+        /* Highlights & Effects */
+        .highlight { background: linear-gradient(transparent 65%, #fff176 65%); font-weight: 800; display: inline-block; animation: pulse 2s infinite; }
+        .emphasis { color: #ff1744; font-weight: 800; }
+        
+        /* 애니메이션 정의 */
+        @keyframes drop-down { 0% { transform: translateY(-50px); opacity: 0; } 60% { transform: translateY(10px); opacity: 1; } 100% { transform: translateY(0); } }
+        .effect-drop { display: inline-block; animation: drop-down 0.8s ease-out forwards; color: #d32f2f; font-weight: 900; font-size: 1.2em; }
 
-        .chapter-number {
-            font-size: 15px;
-            color: #ff6b9d;
-            font-weight: 800;
-        }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.2); color: #ff4081; } 100% { transform: scale(1); color: inherit; } }
+        .effect-pop { display: inline-block; animation: pop 0.6s ease-in-out infinite alternate; font-weight: bold; color: #ff4081; }
 
-        .chapter-title {
-            font-size: 24px;
-            font-weight: 800;
-            color: #333;
-        }
+        @keyframes sizzle { 0% { transform: translate(0, 0) rotate(0deg); color: #ff5722; } 50% { transform: translate(2px, -2px) rotate(2deg); color: #d84315; } 100% { transform: translate(0, 0) rotate(0deg); color: #ff5722; } }
+        .effect-sizzle { display: inline-block; animation: sizzle 0.5s linear infinite; font-weight: bold; }
 
-        /* Story Text */
-        .story-text {
-            font-size: 20px; /* 1학년을 위해 크기 상향 */
-            color: #333;
-            line-height: 2.2;
-            margin-bottom: 25px;
-        }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .effect-bounce { display: inline-block; animation: bounce 0.8s ease infinite; font-weight: bold; color: #3f51b5; }
 
-        .story-text.indent {
-            padding-left: 15px;
-            position: relative;
-        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-        /* Dialogue */
-        .dialogue {
-            font-family: 'Gowun Dodum', sans-serif; /* 대화문은 조금 더 다정한 폰트 */
-            background: #fdf2f4;
-            padding: 25px;
-            border-radius: 25px;
-            margin: 30px 0;
-            font-size: 21px;
-            line-height: 1.8;
-            color: #444;
-            position: relative;
-        }
-
-        /* Highlights */
-        .highlight {
-            background: linear-gradient(transparent 65%, #fff176 65%);
-            font-weight: 800;
-        }
-
-        .emphasis {
-            color: #ff1744;
-            font-weight: 800;
-        }
-
-        .section-divider {
-            text-align: center;
-            margin: 50px 0;
-            color: #ffcad4;
-            font-size: 20px;
-            letter-spacing: 15px;
-        }
+        .section-divider { text-align: center; margin: 50px 0; color: #ffcad4; font-size: 20px; letter-spacing: 15px; }
 
         /* Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 35px;
-            border-radius: 30px;
-            width: 85%;
-            max-width: 350px;
-            text-align: center;
-        }
-
-        .modal-btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            font-family: 'NanumSquareRound', sans-serif;
-        }
-
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: white; padding: 35px; border-radius: 30px; width: 85%; max-width: 350px; text-align: center; }
+        .modal-btn { padding: 12px 25px; border: none; border-radius: 30px; font-size: 16px; font-weight: 800; cursor: pointer; font-family: 'NanumSquareRound', sans-serif; }
         .modal-btn-yes { background: #ff1744; color: white; }
         .modal-btn-no { background: #eee; color: #666; margin-top: 10px; }
 
         /* Story End Section */
-        .story-end-text {
-            padding: 80px 20px;
-            text-align: center;
-            background: white;
-        }
+        .story-end-text { padding: 80px 20px; text-align: center; background: white; }
+        .story-end-title { font-size: 28px; font-weight: 800; color: #ff1744; }
 
-        .story-end-title {
-            font-size: 28px;
-            font-weight: 800;
-            color: #ff1744;
+        /* Mobile Optimization */
+        @media screen and (max-width: 600px) {
+            .story-title { font-size: 26px; }
+            .chapter-title { font-size: 20px; }
+            .story-text { font-size: 18px; }
+            .dialogue { font-size: 19px; }
         }
     </style>
 </head>
@@ -264,77 +113,184 @@
 
     <div class="story-container">
         <div class="full-screen-container">
-            <img src="images/castle0.jpg" alt="표지" class="full-screen-img"
+            <img src="images/castle0.jpg" alt="표지: 조율이의 딸기 성" class="full-screen-img hero-img"
                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221080%22 height=%221920%22%3E%3Crect width=%221080%22 height=%221920%22 fill=%22%23ffe4e9%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2260%22 text-anchor=%22middle%22 fill=%22%23ff1744%22 font-weight=%22bold%22%3E조율이의 딸기 성%3C/text%3E%3C/svg%3E'">
         </div>
 
         <div class="story-content">
             <div class="story-header">
                 <h1 class="story-title">율이의 성심당 이야기</h1>
-                <p class="story-subtitle">미래의 성심당 대표 : 조율</p>
+                <p class="story-subtitle">미래의 성심당 리더: 조율</p>
                 <p class="story-year">2025년 대전, 그리고 꿈의 시간</p>
             </div>
 
-            <div class="chapter" id="chapter-1">오후 3:53 2025-12-19
+            <div class="chapter" id="chapter-1">
                 <div class="chapter-header">
                     <div class="chapter-emoji">🍓</div>
-                    <div>
-                        <div class="chapter-number">제1장</div>
-                        <div class="chapter-title">딸기 산과 조율이의 결심</div>
-                    </div>
+                    <div class="chapter-title">와르르 쏟아진 딸기 산과 조율이의 결심</div>
                 </div>
                 <p class="story-text">2025년 겨울, 대전의 성심당 케익부띠끄 앞에는 긴 줄이 서 있었어. 꼬마 조율이도 엄마 손을 잡고 그 줄에 서 있었지.</p>
-                <div class="dialogue">"엄마, 우리 뭐 사러 온 거야?"<br>"응, 딸기가 산처럼 쌓여 있는 '딸기시루' 케이크란다."</div>
-                <p class="story-text"><span class="emphasis">'쿵!'</span> 무거운 케이크 상자를 받아 든 조율이는 깜짝 놀랐어. 케이크가 벽돌처럼 무거웠거든!</p>
-                <p class="story-text">집에 와서 한 입 먹어보니, 달콤한 생크림과 딸기가 입안에서 팡팡 터지는 거야. 조율이는 눈을 반짝이며 외쳤어.</p>
-                <div class="dialogue"><span class="emphasis">"나 결심했어! 나도 커서 성심당처럼 큰 빵집을 열 거야. 돈을 아주 많이 벌어서 수영장 있는 집에서 살 거야!"</span></div>
+                <div class="dialogue">"엄마, 우리 뭐 사러 온 거야?"<br>"응, 딸기가 산처럼 쌓여 있는 '딸기시루' 케이크를 사러 왔단다."</div>
+                <p class="story-text">드디어 조율이네 차례가 되었어. <span class="effect-drop">'쿵!'</span> 무거운 케이크 상자를 받아 든 조율이는 깜짝 놀랐어. 케이크가 벽돌처럼 무거웠거든!</p>
+                <p class="story-text">집에 와서 한 입 먹어보니, 달콤한 생크림과 상큼한 딸기가 입안에서 <span class="effect-pop">팡팡</span> 터지는 거야.</p>
+                <div class="dialogue">"우와! 빵보다 딸기가 더 많아! 너무 맛있다!"</div>
+                <p class="story-text">조율이는 계산기를 두드리며 눈을 반짝였어. "이 많은 사람이 다 케이크를 사가네? 성심당 사장님은 진짜 부자인가 봐!" 조율이는 포크를 높이 들고 외쳤어.</p>
+                <div class="dialogue"><span class="emphasis">"나 결심했어! 나도 커서 성심당처럼 큰 빵집을 열 거야. 그래서 돈을 아주아주 많이 벌어서 대저택에서 살 거야!"</span></div>
             </div>
 
             <div class="chapter" id="chapter-2">
-                <div class="chapter-header"><div class="chapter-emoji">📚</div><div><div class="chapter-number">제2장</div><div class="chapter-title">빵 굽는 마법사와 노트</div></div></div>
-                <p class="story-text">조율이는 멋진 사장님이 되기 위해 두 가지 공부를 열심히 했어.</p>
-                <p class="story-text">첫 번째는 <span class="highlight">'맛있는 빵 만들기'</span>였어. 밀가루와 이스트가 만나 부풀어 오르는 모습이 꼭 마법 같았지. 조율이는 실패해도 포기하지 않고 비밀 노트에 꼼꼼히 적었어.</p>
-                <p class="story-text">두 번째는 <span class="highlight">'지혜로운 대장 되기'</span>였어. 친구들과 사이좋게 지내고 마음을 얻는 법을 배웠단다.</p>
+                <div class="chapter-header">
+                    <div class="chapter-emoji">📚</div>
+                    <div class="chapter-title">빵 굽는 마법사와 똑똑한 리더의 공부</div>
+                </div>
+                <p class="story-text">시간이 흘러 조율이는 쑥쑥 자랐어. 조율이는 '돈을 많이 버는 멋진 리더'가 되기 위해 두 가지 공부를 아주 열심히 했단다.</p>
+                <p class="story-text">첫 번째는 <span class="highlight">'맛있는 빵 만들기'</span>였어.</p>
+                <div class="dialogue">"밀가루랑 이스트가 만나면... <span class="effect-sizzle">부글부글!</span> 빵이 풍선처럼 부풀어 오르네?"</div>
+                <p class="story-text">조율이는 옛날 임영진 사장님처럼 튀김소보로를 만드는 연습을 했어. 기름 온도가 너무 뜨거우면 <span class="effect-sizzle">'치이익!'</span> 타버리고, 너무 차가우면 눅눅해졌지. 조율이는 실패해도 포기하지 않고 비밀 노트에 꼼꼼히 적었어. 마치 과학자처럼 말이야.</p>
+                <div class="section-divider">✦ ✦ ✦</div>
+                <p class="story-text">두 번째는 <span class="highlight">'지혜로운 리더 되기(경영)'</span>였어. 조율이는 빵만 잘 만들어서는 큰 가게를 지킬 수 없다는 걸 알았어. 그래서 어려운 '경영' 책도 읽기 시작했지.</p>
+                <div class="dialogue">"아빠, 경영이 뭐예요?"<br>"응, 경영은 우리 빵집이라는 커다란 배가 가라앉지 않고 잘 나아가도록 운전하는 거야."</div>
+                <p class="story-text">조율이는 노트에 이렇게 적었어.</p>
+                <ul class="story-text">
+                    <li><span class="emphasis">돈 관리하기:</span> 밀가루를 살 돈과 직원들에게 줄 월급을 꼼꼼하게 계산해야 해. (수학 공부도 열심히!)</li>
+                    <li><span class="emphasis">친구와 마음 맞추기:</span> 혼자서는 못 해. 직원들이 신나게 일할 수 있도록 칭찬해주고 이야기를 들어주는 멋진 리더가 되어야 해.</li>
+                    <li><span class="emphasis">약속 지키기:</span> 손님들에게 "우리 빵은 정말 깨끗하고 맛있어요"라고 한 약속을 꼭 지키는 정직한 마음을 가져야 해.</li>
+                </ul>
+                <p class="story-text">조율이는 빵 굽는 기술과 가게를 운영하는 지혜, 이 두 가지 날개를 튼튼하게 키워나갔단다.</p>
             </div>
 
             <div class="chapter" id="chapter-3">
-                <div class="chapter-header"><div class="chapter-emoji">🍞</div><div><div class="chapter-number">제3장</div><div class="chapter-title">신입 제빵사 조율</div></div></div>
-                <p class="story-text">어른이 된 조율이는 성심당에 들어갔어. "안녕하세요! 신입 제빵사 조율입니다!"</p>
-                <p class="story-text">어느 날, 트럭 한 대가 오더니 빵을 잔뜩 싣고 나가는 거야.</p>
-                <div class="dialogue">"어? 저 빵들은 왜 안 팔고 가져가요?"</div>
-                <div class="dialogue" style="background:#eef2ff; border-left-color:#4f46e5;">"조율아, 저건 배고픈 이웃들에게 나누어 줄 '사랑의 빵'이란다. 우리는 돈만 버는 게 아니라 마음을 나누는 거야."</div>
+                <div class="chapter-header">
+                    <div class="chapter-emoji">🍞</div>
+                    <div class="chapter-title">성심당의 신입 제빵사 조율</div>
+                </div>
+                <p class="story-text">드디어 어른이 된 조율이는 꿈에 그리던 성심당에 들어갔어.</p>
+                <div class="dialogue">"안녕하세요! 신입 제빵사 조율입니다!"</div>
+                <p class="story-text">조율이는 새벽부터 일어나서 밀가루 반죽을 치댔어. <span class="effect-bounce">'으랏차차!'</span> 팔도 아프고 다리도 아팠지만, 오븐에서 갓 구운 빵 냄새를 맡으면 피로가 싹 사라졌지.</p>
+                <div class="section-divider">✦ ✦ ✦</div>
+                <p class="story-text">그런데 어느 날, 조율이는 깜짝 놀랄 장면을 보았어. 트럭 한 대가 오더니, 오늘 만든 빵들을 잔뜩 싣고 나가는 거야.</p>
+                <div class="dialogue">"어? 저 빵들은 왜 안 팔고 가져가요? 저걸 다 팔면 돈을 더 많이 벌 수 있잖아요!"</div>
+                <p class="story-text">그러자 선배 제빵사가 웃으며 말했어.</p>
+                <div class="dialogue" style="background:#eef2ff; border-left-color:#4f46e5;">"조율아, 저건 팔고 남은 빵이 아니야. 배고픈 이웃들에게 나누어 줄 '사랑의 빵'이란다. 우리는 빵을 팔아서 돈만 버는 게 아니라, 마음을 나누는 거야."</div>
+                <p class="story-text">조율이는 고개를 갸웃거렸어. '나누어 주면 내 것이 줄어드는데... 어떻게 부자가 되지?'</p>
             </div>
 
             <div class="chapter" id="chapter-4">
-                <div class="chapter-header"><div class="chapter-emoji">🔥</div><div><div class="chapter-number">제4장</div><div class="chapter-title">잿더미 속에서 핀 꽃</div></div></div>
-                <p class="story-text">힘든 날도 있었어. 실수로 케이크를 망쳤을 때, 임영진 할아버지가 다가와 말씀하셨지.</p>
-                <div class="dialogue">"옛날에 빵집에 불이 났을 때, 직원들이 도망가지 않고 함께 잿더미를 치워주었단다. 평소에 우리가 마음을 나누었기 때문이야. <span class="highlight">돈보다 중요한 건 사람의 마음</span>이란다."</div>
-                <p class="story-text">조율이는 깨달았어. 진짜 부자는 혼자 사는 게 아니라 <span class="emphasis">'나를 도와주는 친구가 많은 사람'</span>이라는 걸 말이야.</p>
+                <div class="chapter-header">
+                    <div class="chapter-emoji">🔥</div>
+                    <div class="chapter-title">잿더미 속에서 핀 꽃</div>
+                </div>
+                <p class="story-text">어느 날, 조율이에게 힘든 일이 생겼어. 열심히 만든 케이크가 실수로 망가져 버린 거야. 조율이는 너무 속상해서 울고 싶었어.</p>
+                <div class="dialogue">"난 틀렸어... 훌륭한 리더는 못 될 거야."</div>
+                <p class="story-text">그때, 할아버지가 된 임영진 전 사장님이 조율이에게 다가와 옛날이야기를 해주셨어.</p>
+                <div class="dialogue" style="background:#fce4ec; border-left-color:#ad1457;">"조율아, 옛날에 우리 빵집에 아주 큰 불이 났었단다. 빵 기계가 다 녹아버렸지. 나도 그때는 다 포기하고 싶었어. 그런데 직원들이 도망가지 않고 다 같이 나와서 잿더미를 치워주었단다. '우리가 다시 일으켜요!' 하면서 말이야."</div>
+                <div class="dialogue">"정말요? 직원들이요?"</div>
+                <div class="dialogue" style="background:#fce4ec; border-left-color:#ad1457;">"그래. 평소에 우리가 서로를 가족처럼 아끼고, 이웃에게 빵을 나누었기 때문에 기적이 일어난 거야. 돈보다 중요한 건 바로 <span class="highlight">'사람의 마음'</span>이란다."</div>
+                <p class="story-text">조율이는 그제야 깨달았어. 진짜 부자는 혼자만 큰 성에 사는 사람이 아니라, <span class="highlight">'나를 도와주는 친구가 많은 사람'</span>이라는 걸 말이야.</p>
             </div>
 
             <div class="chapter" id="chapter-5">
-                <div class="chapter-header"><div class="chapter-emoji">🏰</div><div><div class="chapter-number">제5장</div><div class="chapter-title">세상에서 가장 큰 집</div></div></div>
-                <p class="story-text">조율이는 드디어 성심당의 대표가 되었어. 조율이는 으리으리한 성 대신 <span class="highlight">'모두가 행복한 빵집'</span>을 만들었지.</p>
-                <p class="story-text indent">🎉 직원들은 웃으며 일하고,</p>
-                <p class="story-text indent">🍰 손님들은 맛있는 빵을 싸게 먹고,</p>
-                <p class="story-text indent">💝 이웃들은 배부르게 빵을 나누어 먹었어.</p>
-                <div class="dialogue"><span class="emphasis">"여기가 바로 세상에서 가장 행복한 나의 대저택이야!"</span></div>
+                <div class="chapter-header">
+                    <div class="chapter-emoji">🏰</div>
+                    <div class="chapter-title">세상에서 가장 큰 집, 성심당</div>
+                </div>
+                <p class="story-text">더 많은 시간이 흘러, 조율이는 드디어 성심당의 리더(대표)가 되었어. 어릴 적 꿈꾸던 대저택은 샀을까?</p>
+                <p class="story-text">조율이는 으리으리한 성 대신, 더 멋진 곳을 만들었어. 바로 <span class="highlight">'모두가 행복한 빵집'</span>이라는 거대한 성이었지.</p>
+                <div class="section-divider">✦ ✦ ✦</div>
+                <p class="story-text"><span class="emphasis">조율이네 빵집에서는:</span></p>
+                <ul class="story-text">
+                    <li>🎉 직원들이 웃으면서 일해요. (이익을 나누어 주거든요!)</li>
+                    <li>🍰 손님들은 싼 가격에 맛있는 빵을 먹어요. (재료를 아끼지 않거든요!)</li>
+                    <li>💝 가난한 이웃들도 배부르게 빵을 먹어요. (매일매일 나누거든요!)</li>
+                </ul>
+                <p class="story-text">조율이는 빵 공장 한가운데 서서 환하게 웃었어.</p>
+                <div class="dialogue"><span class="emphasis">"어릴 때는 나 혼자만 잘 먹고 잘 사는 게 꿈이었는데, 지금은 우리 직원들과 손님들 모두가 내 가족 같아. 여기가 바로 세상에서 가장 행복한 나의 대저택이야!"</span></div>
+                <p class="story-text" style="margin-top: 30px; color: #666; text-align: center;">지금도 대전 성심당에 가면, 멋진 리더 조율이가 만든 '행복 시루 케이크'를 만날 수 있대. <br> 한 입 먹으면 마음까지 따뜻해지는 마법의 케이크란다.</p>
             </div>
 
             <div class="story-end-text">
-                <h2 class="story-end-title">- The story has ended for now,<br>but let's definitely meet in the future, Yul.  -</h2>
+                <h2 class="story-end-title">The story has ended for now,<br>but let's definitely meet in the future, Yul.</h2>
                 <p style="color:#999; margin-top:10px;">성심당의 대표, 미래의 조율이가 지금의 조율이에게✨</p>
             </div>
         </div>
 
         <div class="full-screen-container">
-            <img src="images/castle1.jpg" alt="마지막" class="full-screen-img"
+            <img src="images/castle1.jpg" alt="마지막: 행복한 조율이의 꿈" class="full-screen-img"
                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221080%22 height=%221920%22%3E%3Crect width=%221080%22 height=%221920%22 fill=%22%23ffe4e9%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2240%22 text-anchor=%22middle%22 fill=%22%23ff1744%22 font-weight=%22bold%22%3E행복한 조율이의 꿈%3C/text%3E%3C/svg%3E'">
+        </div>
+
+        <div class="story-content" style="background-color: #fff9fa; border-top: 5px solid #ffcad4;">
+            <div class="story-header">
+                <p style="font-size: 16px; color: #ff6b9d; margin-bottom: 10px;">BONUS STORY</p>
+                <h1 class="story-title">밀가루 두 포대의 기적: 성심당 이야기</h1>
+            </div>
+
+            <div class="chapter">
+                <div class="chapter-header">
+                    <div class="chapter-emoji">🛳️</div>
+                    <div class="chapter-title">제1장: 기적을 싣고 온 배, 메러디스 빅토리호</div>
+                </div>
+                <p class="story-text">옛날 옛적, 아주 추운 겨울이었어. 펑펑 눈이 내리는 바닷가에 수만 명의 사람들이 발을 동동 구르고 있었단다. 무서운 전쟁이 나서 도망쳐야 하는데, 탈 배가 없었거든.</p>
+                <p class="story-text">그때 저 멀리서 커다란 배 한 척이 나타났어. 배의 이름은 '메러디스 빅토리호'. 하지만 그 배에는 이미 전쟁 물건들이 가득 차 있어서 사람을 태울 자리가 없었어.</p>
+                <div class="dialogue">"물건들을 다 버려라! 사람을 구하는 게 먼저다!"</div>
+                <p class="story-text">배에 있던 무거운 짐들이 바다로 <span class="effect-drop">풍덩풍덩</span> 던져졌고, 그 빈자리에 무려 1만 4천 명의 사람들이 탈 수 있었단다.</p>
+                <p class="story-text">그 배 안에는 성심당을 처음 만든 임길순 할아버지 가족도 있었어. 할아버지는 좁고 캄캄한 배 안에서 덜덜 떨며 하느님께 기도를 드렸어.</p>
+                <div class="dialogue" style="background:#fff; border: 2px dashed #ffcad4;">"하느님, 제발 우리 가족을 살려주세요. 만약 살려주신다면, 남은 평생 가난하고 배고픈 사람들을 도우며 살겠습니다."</div>
+                <p class="story-text">이 기도가 바로 성심당의 시작이었단다. 할아버지는 무사히 살아남았고, 그 약속을 지키기 위해 평생을 바쳤어. 약속을 지키는 마음, 정말 멋지지 않니?</p>
+            </div>
+
+            <div class="chapter">
+                <div class="chapter-header">
+                    <div class="chapter-emoji">🌾</div>
+                    <div class="chapter-title">제2장: 밀가루 두 포대의 마법</div>
+                </div>
+                <p class="story-text">전쟁이 끝나고 할아버지는 기차를 타고 서울로 가려다가, 기차가 고장 나는 바람에 대전이라는 도시에 내리게 되었어. 가진 돈도 없고 아는 사람도 없었지만, 할아버지에게는 밀가루 두 포대가 있었어.</p>
+                <p class="story-text">할아버지는 대전역 앞에 작은 천막을 치고 <span class="effect-pop">따끈따끈한</span> 찐빵을 만들어 팔기 시작했어.</p>
+                <div class="dialogue">"따끈따끈한 찐빵 드세요!"</div>
+                <p class="story-text">그런데 이상한 일이 벌어졌어. 할아버지는 찐빵을 팔아서 돈을 버는 것보다, 배고픈 사람들에게 공짜로 나눠주는 게 더 많았거든.</p>
+                <p class="story-text">사람들은 걱정했어. "아이고, 저러다가 망하겠어." 하지만 신기하게도 나누면 나눌수록 손님이 더 많이 찾아왔어. 사람들은 "저 집은 마음이 착한 집이야, 저 집 빵을 먹으면 우리도 착해질 거야"라고 생각했거든. <span class="highlight">'성심당'</span>이라는 이름은 바로 '예수님의 마음을 닮은 집'이라는 뜻이란다.</p>
+            </div>
+
+            <div class="chapter">
+                <div class="chapter-header">
+                    <div class="chapter-emoji">🔥</div>
+                    <div class="chapter-title">제3장: 불이 났어요! 하지만 도망가지 않아요</div>
+                </div>
+                <p class="story-text">할아버지의 아들인 임영진 아저씨가 사장님이 되었을 때의 일이야. 2005년 어느 추운 겨울밤, 빵집에 큰 불이 나고 말았어.</p>
+                <p class="story-text"><span class="effect-sizzle">화르륵!</span> 빵을 굽는 기계도, 맛있는 밀가루도 다 타버려서 잿더미가 되었지. 사장님은 너무 슬퍼서 주저앉아 울었어. "이제 다 끝났어..."</p>
+                <p class="story-text">그런데 다음 날 아침, 놀라운 일이 벌어졌어. 직원들이 도망가지 않고 <span class="effect-bounce">다 같이 출근해서</span> 잿더미를 치우기 시작한 거야.</p>
+                <div class="dialogue">"사장님 힘내세요! 우리가 다시 빵집을 일으켜 세워요!"</div>
+                <p class="story-text">직원들은 내 가게인 것처럼 팔을 걷어붙이고 청소를 하고, 닦고 또 닦았어. 보통 회사가 어려워지면 사람들은 떠나기 마련이야. 하지만 성심당 직원들은 사장님을 가족처럼 사랑했어. 평소에 사장님이 직원들을 아껴주고 맛있는 것도 많이 나눠주었기 때문이지. 덕분에 성심당은 불이 난 지 6일 만에 다시 맛있는 빵 냄새를 풍길 수 있었단다.</p>
+            </div>
+
+            <div class="chapter">
+                <div class="chapter-header">
+                    <div class="chapter-emoji">🥐</div>
+                    <div class="chapter-title">제4장: 튀김소보로와 딸기 산의 비밀</div>
+                </div>
+                <p class="story-text">성심당에는 아주 특별한 빵들이 있어.</p>
+                <p class="story-text">첫 번째는 <span class="emphasis">튀김소보로</span>야. "단팥빵도 먹고 싶고, 소보로빵도 먹고 싶고, 도넛도 먹고 싶어!" 욕심쟁이 친구들을 위해 이 세 가지를 합쳐서 튀겨낸 빵이지.</p>
+                <p class="story-text">두 번째는 <span class="emphasis">딸기시루</span>라는 케이크야. 이 케이크는 빵보다 딸기가 더 많아! 들어가는 딸기 무게만 1kg이 넘는대. 다른 가게들은 딸기가 비싸서 조금만 넣는데, 성심당은 "재료를 아끼면 안 돼!"라며 딸기를 <span class="effect-bounce">산처럼</span> 쌓아줬어. 그래서 전국에서 이 케이크를 사려고 사람들이 줄을 서게 되었단다.</p>
+                <p class="story-text">실패를 두려워하지 않고 엉뚱한 상상을 하는 것, 그리고 재료를 아끼지 않는 정직함이 바로 대박의 비밀이야!</p>
+            </div>
+
+            <div class="chapter">
+                <div class="chapter-header">
+                    <div class="chapter-emoji">💰</div>
+                    <div class="chapter-title">제5장: 돈을 많이 버는 진짜 방법 (모두가 행복한 경제)</div>
+                </div>
+                <p class="story-text">성심당은 지금 아주아주 큰 부자 빵집이 되었어. 1년에 파는 빵이 1,200억 원어치가 넘고, 큰 대기업 빵집들보다 돈을 더 많이 번대. 하지만 성심당 사장님은 돈을 혼자 다 갖지 않아.</p>
+                <ul class="story-text">
+                    <li><span class="emphasis">직원들에게 나눠줘요:</span> "우리 같이 고생했으니 같이 부자가 되자!" 하며 이익의 15%를 직원들에게 보너스로 줘.</li>
+                    <li><span class="emphasis">가난한 이웃에게 나눠줘요:</span> 매일매일 팔고 남은 빵은 모두 고아원이나 양로원 같은 곳에 기부해. 그 양이 트럭으로 실어야 할 만큼 많대.</li>
+                </ul>
+                <p class="story-text">성경에 <span class="highlight">"모든 이가 다 좋게 여기는 일을 하십시오"</span>라는 말이 있어. 사장님은 나만 부자가 되는 게 아니라, 직원도, 손님도, 가난한 이웃도 모두 행복해지는 것이 진짜 성공이라고 믿어. 이것을 어려운 말로 <span class="highlight">EoC(모두를 위한 경제)</span>라고 부른단다.</p>
+            </div>
         </div>
     </div>
 
     <script>
-        const STORY_ID = 'yul_story_castle_v2';
+        const STORY_ID = 'yul_story_castle_v3_final';
         const progressFill = document.getElementById('progressFill');
         const continueModal = document.getElementById('continueModal');
 
@@ -348,7 +304,8 @@
             if (scrollTop >= scrollHeight - 50) localStorage.removeItem(STORY_ID);
         });
 
-        window.addEventListener('load', () => {오후 1:10 2025-12-19            const saved = localStorage.getItem(STORY_ID);
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem(STORY_ID);
             if (saved) setTimeout(() => continueModal.classList.add('active'), 500);
         });
 
