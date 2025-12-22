@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>율이의 여행시리즈: [학습만화] 율이의 수학여행 : 곱셈은 왜 하는거야?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #fff7ed; overflow: hidden; touch-action: manipulation; }
+        .font-comic { font-family: 'Jua', sans-serif; }
+        @keyframes float { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-5px) rotate(5deg); } 100% { transform: translateY(0px) rotate(0deg); } }
+        .btn-theme { animation: float 2.5s infinite ease-in-out; cursor: pointer; transition: all 0.2s; }
+        .btn-theme:active { transform: scale(0.9); }
+        .text-box { background-color: rgba(255, 255, 255, 0.98); border-radius: 20px 20px 0 0; box-shadow: 0 -4px 15px rgba(0,0,0,0.1); }
+        .img-container { width: 100%; height: 100%; background-color: #fef3c7; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+        .img-cover { width: 100%; height: 100%; object-fit: cover; }
+        .img-fit { width: 100%; height: 100%; object-fit: contain; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        /* 텍스트 동적 효과 */
+        @keyframes text-pop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); text-shadow: 0 0 5px rgba(251, 146, 60, 0.3); } }
+        .animate-pop { display: inline-block; animation: text-pop 2s infinite ease-in-out; }
+        @keyframes text-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-1px); } 75% { transform: translateX(1px); } }
+        .animate-shake { display: inline-block; animation: text-shake 0.4s infinite; }
+        @keyframes text-focus { from { filter: blur(3px); opacity: 0; } to { filter: blur(0); opacity: 1; } }
+        .animate-focus { animation: text-focus 0.8s ease-out forwards; }
+
+        .char-baekhap { color: #15803d; font-weight: 700; } 
+        .char-joyul { color: #0ea5e9; font-weight: 700; }    
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .back-button {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 50px; height: 50px; background: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border: 2px solid #fdba74; z-index: 50; text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .back-button:active { transform: translateX(-50%) scale(0.9); }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col justify-center items-center">
+    <div id="app" class="w-full h-full max-w-md bg-white relative shadow-2xl overflow-hidden flex flex-col border-x border-orange-100"></div>
+    <a href="index.html" class="back-button">🏠</a>
+
+    <script>
+        const THEME_EMOJI = "🧮";
+
+        const storyData = [
+            {
+                type: 'cover',
+                image: 'images/math0.jpg',
+                title: '율이의 여행시리즈: [학습만화] 율이의 수학여행 : 곱셈은 왜 하는거야?'
+            },
+            {
+                type: 'story',
+                image: 'images/math1.jpg',
+                title: '등장인물',
+                content: `
+                    <p class="mb-2"><span class="char-joyul">👧🏻 조율 (청곡초 1):</span> 궁금한 건 못 참는 청곡초의 <span class="animate-pop text-blue-500">호기심 대장</span>. 하나하나 세는 걸 좋아하지만 금방 지치곤 한다.</p>
+                    <p><span class="char-baekhap">🥋 김다온 (청곡초 2):</span> 율이의 아파트 옆집 언니. 동생들에게 가르쳐줄 때 가장 뿌듯해하는 <span class="animate-shake text-green-700 font-bold">'열정 선생님'</span>.</p>
+                `
+            },
+            {
+                type: 'story',
+                image: 'images/math2.jpg',
+                title: "1장. 덧셈보다 빠른 마법?",
+                sub: "정권 지르기 마법",
+                content: `
+                    <p class="mb-1"><span class="char-joyul">율:</span> "하나... 둘... 셋... 아유, 이 예쁜 돌멩이가 전부 몇 개인지 다 더하려면 <span class="animate-shake">해가 지겠어!</span>"</p>
+                    <p class="mb-1"><span class="char-baekhap">다온:</span> (기합 소리와 함께 등장) <span class="animate-pop text-red-600 font-black">"얍!"</span> 율아, 여기서 뭐 하고 있어? 보석이 정말 많네!"</p>
+                    <p class="mb-1"><span class="char-joyul">율:</span> "다온 언니! 태권도 다녀오는 길이에요? 이거 언제 다 더하나 해서요. 너무 힘들어요."</p>
+                    <p><span class="char-baekhap">다온:</span> (듬직하게 웃으며) "이럴 땐 더하기보다 <span class="animate-focus text-orange-600 font-bold">백 배는 빠른 곱셈 마법</span>을 써야지. 언니가 오늘 특별히 전수해주마!"</p>
+                `
+            },
+            {
+                type: 'story',
+                image: 'images/math3.jpg',
+                title: "2장. 4000년 전의 비밀",
+                sub: "진흙판에서 시작된 지혜",
+                content: `
+                    <p class="mb-1"><span class="char-baekhap">다온:</span> "사실 곱셈은 아주 옛날, <span class="animate-pop text-blue-600 font-bold">4000년 전</span> 바빌로니아 사람들이 먼저 시작했대."</p>
+                    <p class="mb-1"><span class="char-joyul">율:</span> "우와, 4000년 전요? 종이도 없었을 텐데 어떻게 썼어요?"</p>
+                    <p class="mb-1"><span class="char-baekhap">다온:</span> "딱딱한 <span class="bg-yellow-100">진흙판(점토판)</span>에 숫자를 새겼지. 양 떼를 세는 게 너무 느려서 고민이었거든!"</p>
+                    <p class="mb-1"><span class="char-joyul">율:</span> "아하! 양들은 계속 움직이니까 <span class="animate-shake text-orange-600 font-bold">'한눈에 묶어서'</span> 세는 게 필요했겠네요!"</p>
+                    <p class="mb-1"><span class="char-baekhap">다온:</span> "정답! 이게 바로 상인들의 <span class="animate-pop">필살기</span>였지. 그리고 이 <span class="font-black">x</span> 모양은 오트레드 선생님이 도복 띠를 묶는 것처럼 <span class="underline">교차</span>시킨다는 뜻으로 만드신 거야!"</p>
+                `
+            },
+            {
+                type: 'story',
+                image: 'images/math4.jpg',
+                title: "3장. 우리 동네 곱셈 탐험",
+                sub: "아이스크림 & 아트박스",
+                content: `
+                    <p class="mb-1"><span class="char-baekhap">다온:</span> "500원짜리 아이스크림을 3개 살 거야. 율아, 계산해봐!"</p>
+                    <p class="mb-1"><span class="char-joyul">율:</span> "음... 500 + 500 + 500이니까... <span class="animate-focus text-blue-600 font-bold">1500원!</span>"</p>
+                    <p class="mb-1"><span class="char-baekhap">다온:</span> "좋았어! 하지만 곱셈 마법을 쓰면 <span class="animate-pop text-red-500 font-black">500 x 3</span>으로 한 번에 끝!"</p>
+                    <p class="mb-1"><span class="char-baekhap">다온:</span> "이번엔 아트박스! 이 스티커 봉투에는 스티커가 2장씩 들어있네? 4봉지를 사면?"</p>
+                    <p class="mb-1"><span class="char-joyul">율:</span> "2장씩 4묶음이니까... <span class="animate-focus">2 x 4 = 8</span>! 우와, 8장이다!"</p>
+                `
+            },
+            {
+                type: 'story',
+                image: 'images/math5.jpg',
+                title: "4장. 세상에서 제일 쉬운 10단 마법!",
+                sub: "태권도 검은띠급 필살기",
+                content: `
+                    <p class="mb-1"><span class="char-baekhap">다온:</span> "10에 어떤 수를 곱하면, 그 수 뒤에 <span class="animate-pop text-2xl font-black text-red-600">숫자 '0'</span>만 찰떡같이 붙여주면 끝이야!"</p>
+                    <p class="mb-1"><span class="char-joyul">율:</span> "10단요? 숫자가 너무 커서 어려워요!"</p>
+                    <p class="mb-1"><span class="char-baekhap">다온:</span> "10 x 1 = 10, 10 x 2 = 20! 그럼 10 x 5는?"</p>
+                    <p class="mb-1"><span class="char-joyul">율:</span> "어? 설마... 5 뒤에 0을 붙여서 <span class="animate-shake text-blue-600 font-black">50</span>인가요?"</p>
+                    <p class="mb-1"><span class="char-baekhap">다온:</span> "훌륭해! 그럼 최고 난이도, 10 x 10은?"</p>
+                    <p><span class="char-joyul">율:</span> "10 뒤에 0을 하나 더 붙이니까... <span class="animate-pop text-orange-600 font-black">100!</span> 나 방금 100까지 곱하기 했어요!"</p>
+                `
+            },
+            {
+                type: 'story',
+                image: 'images/math6.jpg',
+                title: "5장. 곱셈 마법사 조율!",
+                sub: "모험 완료",
+                content: `
+                    <p class="mb-1"><span class="char-joyul">율:</span> "언니, 곱셈은 더하기를 귀찮아하던 옛날 사람들이 만든 <span class="animate-focus text-pink-500 font-bold">멋진 선물</span>이었네요!"</p>
+                    <p class="mb-1"><span class="char-baekhap">다온:</span> "맞아. 이제 율이도 곱셈 마법사니까, 가게 가면 언니보다 더 빨리 계산하겠는데?"</p>
+                    <p><span class="char-joyul">율:</span> "헤헤, 이제 하나씩 안 세고 <span class="animate-shake text-blue-500 font-bold">묶어서 곱해버릴래요!</span> 다온 언니, 고마워요!"</p>
+                `
+            },
+            {
+                type: 'quiz_intro',
+                image: 'images/math7.jpg',
+                title: '실력 확인 퀴즈!',
+                content: '<p class="text-center animate-shake">다온이가 내는 퀴즈를 풀고<br><span class="text-orange-600 font-bold">진정한 곱셈 마법사</span>가 되어보자!</p>'
+            },
+            {
+                type: 'ending',
+                image: 'images/math8.jpg'
+            }
+        ];
+
+        const quizData = [
+            { question: "곱셈은 아주 옛날 사람들이 더하기가 귀찮아서 만든 지름길이다.", answer: true, explanation: "똑같은 숫자를 여러 번 더하기 힘들 때 만든 똑똑한 방법이야!" },
+            { question: "곱셈 기호 ✖️는 1600년대에 오트레드가 처음 사용했다.", answer: true, explanation: "도복 띠를 묶는 모양처럼 ✖️ 기호를 처음 쓰기 시작했단다." },
+            { question: "물건을 많이 살 때는 곱셈보다 하나씩 더하는 것이 항상 더 빠르다.", answer: false, explanation: "개수가 많아질수록 곱셈이 훨씬 빠르고 정확하단다!" },
+            { question: "10 x 9를 계산하면 9 뒤에 0을 붙인 90이 정답이다.", answer: true, explanation: "10단 마법의 핵심은 숫자 뒤에 0을 찰떡같이 붙이는 거야!" },
+            { question: "2 x 3의 정답은 2를 세 번 더한 값인 6이다.", answer: true, explanation: "2 x 3은 '2를 3번 더해라'라는 뜻이지!" }
+        ];
+
+        let currentState = { pageIndex: 0, quizIndex: 0, quizStatus: 'question', lastAnswer: null };
+        const app = document.getElementById('app');
+
+        function render() {
+            app.innerHTML = ''; 
+            if (currentState.pageIndex < storyData.length) {
+                const page = storyData[currentState.pageIndex];
+                if (page.type === 'cover') renderCover(page);
+                else if (page.type === 'ending') renderEnding(page);
+                else renderStoryPage(page, page.type === 'quiz_intro');
+            } else {
+                renderQuiz();
+            }
+        }
+
+        function renderCover(data) {
+            const div = document.createElement('div');
+            div.className = "w-full h-full relative cursor-pointer fade-in";
+            div.onclick = nextPage;
+            div.innerHTML = `<div class="img-container"><img src="${data.image}" class="img-cover" onerror="this.parentElement.innerHTML='<div class=\\'p-10 text-center font-comic text-orange-800\\'><h1 class=\\'text-2xl mb-4\\'>${data.title}</h1><p>이미지 준비중</p></div>'"></div><div class="absolute bottom-20 w-full text-center"><div class="inline-block bg-black/40 backdrop-blur-sm text-white font-comic animate-pulse text-lg px-6 py-3 rounded-full border border-white/30">탭하여 시작하기</div></div>`;
+            app.appendChild(div);
+        }
+
+        function renderEnding(data) {
+            const div = document.createElement('div');
+            div.className = "w-full h-full relative cursor-pointer fade-in";
+            div.onclick = restart;
+            div.innerHTML = `<div class="img-container"><img src="${data.image}" class="img-cover" onerror="this.parentElement.innerHTML='<div class=\\'flex flex-col items-center justify-center h-full text-gray-500 font-comic\\'><h1 class=\\'text-4xl mb-4\\'>FIN</h1><p>수학 여행 완료!</p></div>'"></div><div class="absolute bottom-20 w-full text-center"><div class="inline-block bg-black/40 backdrop-blur-sm text-white font-comic animate-pulse text-lg px-6 py-3 rounded-full border border-white/30">🎉 처음으로 돌아가기</div></div>`;
+            app.appendChild(div);
+        }
+
+        function renderStoryPage(data, isQuizIntro) {
+            const div = document.createElement('div');
+            div.className = "w-full h-full flex flex-col bg-white fade-in";
+            // 이미지 65%, 텍스트 35% 비율 적용
+            const imgHtml = `<div class="h-[65%] img-container relative border-b-2 border-orange-100"><img src="${data.image}" class="img-fit" onerror="this.parentElement.innerHTML='<div class=\\'text-gray-400 font-bold\\'>IMAGE</div>'"></div>`;
+            const textHtml = `<div class="h-[35%] flex flex-col relative bg-[#fff7ed] shadow-inner"><div class="flex-1 p-5 overflow-y-auto no-scrollbar text-box -mt-5 z-10 border-t border-orange-50"><h2 class="font-comic text-lg text-orange-600 mb-1">${data.title || ''}</h2>${data.sub ? `<span class="text-[10px] bg-orange-100 px-2 py-0.5 rounded text-orange-600 font-bold">🏷️ ${data.sub}</span>` : ''}<div class="mt-2 text-[20px] leading-relaxed font-medium text-gray-800 space-y-1">${data.content}</div></div><div class="h-16 bg-[#fff7ed] flex justify-between items-center px-6 border-t border-orange-200 pb-1"><div onclick="prevPage()" class="flex flex-col items-center cursor-pointer text-orange-300 transition text-xs font-bold"><span>⏪</span>이전</div>${isQuizIntro ? `<div onclick="startQuiz()" class="btn-theme flex flex-col items-center text-green-600"><div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold shadow-md border-2 border-green-200">?</div><span class="text-[10px] mt-1">퀴즈!</span></div>` : `<div onclick="nextPage()" class="btn-theme flex flex-col items-center text-orange-500"><span class="text-3xl">${THEME_EMOJI}</span><span class="text-[10px] font-bold mt-1">다음</span></div>`}</div></div>`;
+            div.innerHTML = imgHtml + textHtml;
+            app.appendChild(div);
+        }
+
+        function renderQuiz() {
+            if (currentState.quizIndex >= quizData.length) { currentState.pageIndex = storyData.length - 1; render(); return; }
+            const currentQ = quizData[currentState.quizIndex];
+            const div = document.createElement('div');
+            div.className = "w-full h-full flex flex-col bg-orange-50 fade-in";
+            if (currentState.quizStatus === 'question') {
+                div.innerHTML = `<div class="flex-1 flex flex-col items-center justify-center p-6 text-center"><span class="text-green-600 font-bold text-sm mb-4 bg-green-100 px-4 py-1 rounded-full border border-green-200">문제 ${currentState.quizIndex + 1} / 5</span><div class="bg-white p-6 rounded-2xl shadow-lg w-full mb-8 border-2 border-orange-100"><p class="text-xl font-bold break-keep text-gray-800 leading-normal">${currentQ.question}</p></div><div class="flex gap-4"><button onclick="checkAnswer(true)" class="w-20 h-20 bg-blue-500 rounded-full text-white text-4xl font-black shadow-md active:translate-y-1 border-4 border-blue-400">O</button><button onclick="checkAnswer(false)" class="w-20 h-20 bg-red-500 rounded-full text-white text-4xl font-black shadow-md active:translate-y-1 border-4 border-red-400">X</button></div></div>`;
+            } else if (currentState.quizStatus === 'result') {
+                const isCorrect = currentState.lastAnswer === currentQ.answer;
+                div.innerHTML = `<div class="w-full h-full ${isCorrect ? 'bg-green-500' : 'bg-orange-400'} flex flex-col items-center justify-center text-white cursor-pointer" onclick="showExplanation()"><div class="text-7xl mb-4 animate-bounce">${isCorrect ? '🎉' : '🤔'}</div><h2 class="text-4xl font-comic mb-2">${isCorrect ? '정답!' : '틀렸어!'}</h2><p class="animate-pulse text-sm opacity-90">탭하여 해설 보기</p></div>`;
+            } else if (currentState.quizStatus === 'explanation') {
+                div.innerHTML = `<div class="flex-1 flex flex-col p-6 bg-white cursor-pointer" onclick="nextQuizStep()"><div class="flex-1 flex flex-col justify-center items-center"><h3 class="text-xl font-comic text-green-700 mb-4">🥋 다온 언니의 해설</h3><div class="bg-green-50 p-5 rounded-xl border border-green-200 shadow-sm w-full"><p class="text-lg font-medium text-gray-800 leading-relaxed">"${currentQ.explanation}"</p></div></div><div class="h-20 flex items-center justify-center"><div class="btn-theme flex flex-col items-center"><span class="text-4xl">${THEME_EMOJI}</span><span class="text-xs font-bold text-orange-600 mt-1">${currentState.quizIndex === quizData.length - 1 ? "결과 보기" : "다음 문제"}</span></div></div></div>`;
+            }
+            app.appendChild(div);
+        }
+
+        function nextPage() { if (currentState.pageIndex < storyData.length) { currentState.pageIndex++; render(); }}
+        function prevPage() { if (currentState.pageIndex > 0) { currentState.pageIndex--; render(); }}
+        function startQuiz() { currentState.pageIndex = storyData.length; currentState.quizIndex = 0; currentState.quizStatus = 'question'; render(); }
+        function checkAnswer(ans) { currentState.lastAnswer = ans; currentState.quizStatus = 'result'; render(); }
+        function showExplanation() { currentState.quizStatus = 'explanation'; render(); }
+        function nextQuizStep() { currentState.quizIndex++; currentState.quizStatus = 'question'; render(); }
+        function restart() { currentState.pageIndex = 0; currentState.quizIndex = 0; render(); }
+        render();
+    </script>
+</body>
+</html>
