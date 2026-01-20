@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>어린이 도슨트: 황금 마법사 클림트와 사라진 그림의 비밀</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #f4e3c3;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .font-comic {
+            font-family: 'Jua', sans-serif;
+        }
+
+        /* 황금 반짝이는 효과 */
+        @keyframes gold-shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        .gold-text {
+            background: linear-gradient(90deg, #d4af37, #f9df7b, #d4af37, #f9df7b, #d4af37);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gold-shimmer 3s linear infinite;
+        }
+
+        /* 애니메이션 */
+        @keyframes poke-right {
+            0% {
+                transform: translateX(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateX(5px) rotate(10deg);
+            }
+
+            100% {
+                transform: translateX(0) rotate(0deg);
+            }
+        }
+
+        @keyframes poke-left {
+            0% {
+                transform: translateX(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateX(-5px) rotate(-10deg);
+            }
+
+            100% {
+                transform: translateX(0) rotate(0deg);
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                opacity: 0.8;
+            }
+
+            50% {
+                opacity: 1;
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            }
+
+            100% {
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes sparkle {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .btn-next {
+            animation: poke-right 1.5s infinite ease-in-out;
+            cursor: pointer;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .btn-prev {
+            animation: poke-left 1.5s infinite ease-in-out;
+            cursor: pointer;
+            filter: grayscale(100%) opacity(0.5) drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.1));
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* 텍스트 박스 */
+        .text-box {
+            background: linear-gradient(180deg, rgba(26, 26, 46, 0.98), rgba(22, 33, 62, 0.98));
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 30px rgba(212, 175, 55, 0.3);
+            border-top: 3px solid #d4af37;
+        }
+
+        /* 이미지 컨테이너 */
+        .img-container {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2a2a4a, #1a1a2e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .img-fit {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* 캐릭터 대사 강조 색상 */
+        .char-narrator {
+            color: #f9df7b;
+            font-weight: 700;
+        }
+
+        .char-keyword {
+            color: #ff9f43;
+            font-weight: 700;
+        }
+
+        .char-mystery {
+            color: #a29bfe;
+            font-weight: 700;
+        }
+
+        .char-highlight {
+            color: #74b9ff;
+            font-weight: 700;
+        }
+
+        /* 섹션 제목 스타일 */
+        .section-title {
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            border-left: 4px solid #d4af37;
+            padding-left: 12px;
+        }
+
+        /* 반짝이는 별 효과 */
+        .sparkle-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, #f9df7b 0%, transparent 70%);
+            border-radius: 50%;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        /* 황금 프레임 효과 */
+        .gold-frame {
+            border: 4px solid;
+            border-image: linear-gradient(135deg, #d4af37, #f9df7b, #d4af37) 1;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* 질문 박스 */
+        .question-box {
+            background: linear-gradient(135deg, rgba(249, 223, 123, 0.1), rgba(212, 175, 55, 0.1));
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            border-radius: 15px;
+        }
+    </style>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="h-screen w-screen flex flex-col justify-center items-center">
+
+    <div id="app"
+        class="w-full h-full max-w-md relative shadow-2xl overflow-hidden flex flex-col border-x border-amber-700/50"
+        style="background: linear-gradient(135deg, #1a1a2e, #16213e);">
+    </div>
+
+    <script>
+        // 데이터 정의
+        const storyData = [
+            {
+                type: 'cover',
+                image: 'images/mk_00.webp',
+                alt: '표지: 황금 마법사 클림트와 사라진 그림의 비밀'
+            },
+            {
+                type: 'story',
+                image: 'images/mk_01.webp',
+                title: '1. 황금을 사랑한 화가, 클림트 아저씨 ✨',
+                sub: '오스트리아의 천재 화가',
+                content: `
+                    <p class="mb-3">친구들, <span class="char-keyword">반짝반짝 빛나는 금</span>을 좋아하나요?</p>
+                    <p class="mb-3">옛날 <span class="char-highlight">오스트리아</span>라는 나라에 <span class="char-narrator">구스타프 클림트</span>라는 화가 아저씨가 살았어요.</p>
+                    <p class="mb-3">이 아저씨의 아버지는 <span class="char-mystery">금을 다루는 기술자</span>였대요. 그래서인지 클림트 아저씨는 어른이 되어서 그림을 그릴 때 <span class="char-keyword">진짜 황금</span>을 사용해서 그림을 그리기도 했답니다!</p>
+                    <p class="mb-3">사람들은 클림트 아저씨의 그림을 보면 <span class="char-narrator">"와, 눈부시게 아름다워!"</span>라고 감탄했어요.</p>
+                    <p>아저씨는 사람들의 얼굴뿐만 아니라 눈에 보이지 않는 <span class="char-mystery">마음이나 시간</span>까지 그림에 담고 싶어 했거든요.</p>
+                `
+            },
+            {
+                type: 'story',
+                image: 'images/mk_02.webp',
+                title: '2. 수줍은 숙녀, <여인의 초상> 👩',
+                sub: '오늘의 주인공 그림',
+                content: `
+                    <p class="mb-3">자, 이제 오늘의 주인공 그림을 소개할게요. 제목은 <span class="char-narrator">'여인의 초상'</span>이에요.</p>
+                    <p class="mb-3">그림을 한번 볼까요? <span class="char-highlight">초록색 배경</span> 속에 한 여자가 보여요. 볼과 입술은 <span class="char-keyword">발그레</span>하고, 눈동자는 <span class="char-mystery">신비로운 색</span>을 띠고 있죠.</p>
+                    <p class="mb-3">그런데 이 여인의 표정을 자세히 보세요. 어딘가 <span class="char-mystery">수줍어 보이기도 하고</span>, 비밀을 간직한 것 같지 않나요?</p>
+                    <p class="text-xl text-center mt-4">🤫 <span class="char-narrator">쉿, 친구들에게만 알려줄게요!</span></p>
+                    <p class="text-center text-amber-400">사실 이 그림에는 <span class="char-keyword">두 가지 엄청난 비밀</span>이 숨겨져 있어요!</p>
+                `
+            },
+            {
+                type: 'story',
+                image: 'images/mk_03.webp',
+                title: '3. 첫 번째 비밀 🖌️',
+                sub: '그림 속에 또 다른 그림이 있다?',
+                content: `
+                    <p class="mb-3">이 그림은 원래 지금 보이는 모습이 <span class="char-mystery">아니었대요</span>.</p>
+                    <p class="mb-3">1996년, 미술관 사람들이 <span class="char-highlight">특수 카메라(X-ray)</span>로 이 그림을 찍어봤더니 깜짝 놀랄 일이 벌어졌어요!</p>
+                    <p class="mb-3">바로 이 그림 밑에 <span class="char-keyword">또 다른 여자의 그림</span>이 숨겨져 있었던 거예요!</p>
+                    <p class="mb-3">클림트 아저씨는 왜 멀쩡한 그림 위에 덧칠을 했을까요?</p>
+                    <p class="mb-3">사람들은 이렇게 추측해요. 클림트 아저씨가 예전에 <span class="char-mystery">사랑했던 사람</span>을 그렸는데, 그 사람이 갑자기 세상을 떠나서 너무 슬펐대요.</p>
+                    <p>그래서 이 그림은 클림트 아저씨의 그림 중에 유일하게 <span class="char-narrator">'두 번 그려진 그림(이중 초상화)'</span>이라는 별명을 갖게 되었답니다.</p>
+                `
+            },
+            {
+                type: 'story',
+                image: 'images/mk_04.webp',
+                title: '4. 두 번째 비밀 🕵️‍♂️',
+                sub: '23년 동안 사라졌다 벽 속에서 나타난 그림!',
+                content: `
+                    <p class="mb-3">이 그림은 <span class="char-highlight">이탈리아의 '리치 오디 미술관'</span>에 있었는데, 1997년 2월의 어느 날 <span class="char-mystery">감쪽같이 사라져 버렸어요!</span></p>
+                    <p class="mb-3">마치 유령이 가져간 것처럼 <span class="char-keyword">액자만 남기고</span> 그림만 쏙 사라진 거예요!</p>
+                    <p class="mb-3">경찰 아저씨들이 아무리 찾아도 범인을 잡을 수 없었어요. 그렇게 <span class="char-narrator">23년</span>이라는 긴 시간이 흘렀죠.</p>
+                    <p>사람들은 "이제 영영 못 찾을 거야"라고 생각했어요...</p>
+                `
+            },
+            {
+                type: 'story',
+                image: 'images/mk_05.webp',
+                title: '4. 기적의 발견! 🎁',
+                sub: '2019년 크리스마스의 기적',
+                content: `
+                    <p class="mb-3">그런데 <span class="char-keyword">2019년 크리스마스</span> 즈음, 기적 같은 일이 일어났어요! 🎁</p>
+                    <p class="mb-3">미술관 정원을 청소하던 아저씨가 벽에 붙은 <span class="char-highlight">덩굴 식물</span>을 치우다가 <span class="char-mystery">작은 문</span>을 발견했어요.</p>
+                    <p class="mb-3">그 문을 열어보니 <span class="char-keyword">검은 쓰레기봉투</span>가 있었는데, 세상에!</p>
+                    <p class="mb-3 text-xl text-center">🎉 그 안에 사라졌던 <span class="char-narrator">'여인의 초상'</span>이 들어있었던 거예요! 🎉</p>
+                    <p class="mb-3">도둑이 그림을 훔쳐서 멀리 가져간 게 아니라, <span class="char-mystery">23년 동안 미술관 벽 속에 꽁꽁 숨겨두었던</span> 거죠.</p>
+                    <p>다행히 그림은 <span class="char-highlight">아주 멀쩡한 상태</span>로 돌아왔답니다.</p>
+                `
+            },
+            {
+                type: 'story',
+                image: 'images/mk_06.webp',
+                title: '5. 우리에게 찾아온 기적 🌟',
+                sub: '한국에서 만나는 명화',
+                content: `
+                    <p class="mb-3">도둑맞았다가 23년 만에 벽 속에서 발견된 이 <span class="char-keyword">기적 같은 그림</span>이 지금 <span class="char-narrator">한국에 와 있어요</span>.</p>
+                    <p class="mb-3">이 그림이 <span class="char-highlight">이탈리아 밖으로 여행을 나온 건 이번이 처음</span>이래요!</p>
+                    <p class="mb-4 text-lg">친구들, 미술관에 가서 이 그림을 직접 본다면 이렇게 속삭여주세요:</p>
+                    <div class="question-box p-4 text-center">
+                        <p class="text-amber-300 text-lg">"돌아와 줘서 고마워!</p>
+                        <p class="text-amber-300 text-lg">네 안에 숨겨진 비밀 이야기도</p>
+                        <p class="text-amber-300 text-lg">정말 멋지구나!"</p>
+                    </div>
+                `
+            },
+            {
+                type: 'question',
+                image: 'images/mk_07.webp',
+                title: '💡 함께 이야기해요!',
+                sub: '엄마, 아빠와 함께 생각해보세요',
+                content: `
+                    <div class="space-y-4">
+                        <div class="question-box p-4">
+                            <p class="text-amber-400 font-bold mb-2">🎨 질문 1</p>
+                            <p class="text-gray-300">클림트 아저씨는 왜 그림 위에 또 다른 그림을 그렸을까요?</p>
+                            <p class="text-amber-200 mt-2 text-sm">내가 만약 화가라면 어떤 그림을 숨겨놓고 싶나요?</p>
+                        </div>
+                        <div class="question-box p-4">
+                            <p class="text-amber-400 font-bold mb-2">🖼️ 질문 2</p>
+                            <p class="text-gray-300">23년 동안 벽 속에 갇혀 있던 그림은 어떤 생각을 했을까요?</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                type: 'ending',
+                image: 'images/mk_08.webp',
+                alt: '끝 - 황금 마법사 클림트 이야기'
+            }
+        ];
+
+        // 상태 관리
+        let currentState = {
+            pageIndex: 0
+        };
+
+        const app = document.getElementById('app');
+
+        function render() {
+            app.innerHTML = '';
+
+            if (currentState.pageIndex < storyData.length) {
+                const page = storyData[currentState.pageIndex];
+
+                if (page.type === 'cover') {
+                    renderCover(page);
+                } else if (page.type === 'ending') {
+                    renderEnding(page);
+                } else {
+                    renderStoryPage(page);
+                }
+            }
+        }
+
+        // --- 컴포넌트 ---
+
+        function renderCover(data) {
+            const div = document.createElement('div');
+            div.className = "w-full h-full relative cursor-pointer fade-in";
+            div.onclick = nextPage;
+            div.innerHTML = `
+                <div class="img-container">
+                    <img src="${data.image}" class="img-cover" alt="${data.alt}" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex flex-col items-center justify-center p-8 text-center\\' style=\\'background: linear-gradient(135deg, #1a1a2e, #16213e);\\'><span class=\\'text-7xl mb-6 float-animation\\'>🎨✨</span><h1 class=\\'gold-text text-3xl font-comic mb-4\\'>황금 마법사<br>클림트</h1><p class=\\'text-amber-300 text-lg\\'>사라진 그림의 비밀</p></div>'">
+                </div>
+                <div class="absolute bottom-10 w-full text-center font-comic animate-pulse text-xl py-3" style="background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);">
+                    <span class="gold-text">✨ 화면을 터치하여 이야기 시작하기 ✨</span>
+                </div>
+            `;
+            app.appendChild(div);
+        }
+
+        function renderStoryPage(data) {
+            const div = document.createElement('div');
+            div.className = "w-full h-full flex flex-col fade-in";
+            div.style.background = "linear-gradient(135deg, #1a1a2e, #16213e)";
+
+            const imgHtml = `
+                <div class="flex-1 img-container relative" style="border-bottom: 3px solid #d4af37;">
+                    <img src="${data.image}" class="img-fit" alt="삽화" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center text-amber-400/50\\' style=\\'background: linear-gradient(135deg, #2a2a4a, #1a1a2e);\\'>이미지 준비중<br>${data.image}</div>'">
+                </div>
+            `;
+
+            const textHtml = `
+                <div class="h-[40%] flex flex-col relative" style="background: linear-gradient(180deg, #1a1a2e, #16213e);">
+                    <div class="flex-1 p-5 overflow-y-auto text-box -mt-6 z-10 text-base leading-relaxed">
+                        ${data.title ? `<h2 class="font-comic text-xl text-amber-400 mb-1 section-title">${data.title}</h2>` : ''}
+                        ${data.sub ? `<p class="text-sm text-amber-200/70 mb-3">${data.sub}</p>` : ''}
+                        <div class="space-y-1 text-gray-200">
+                            ${data.content}
+                        </div>
+                    </div>
+                    
+                    <div class="h-16 flex justify-between items-center px-8 border-t border-amber-700/30 z-20" style="background: rgba(26, 26, 46, 0.95);">
+                        <div onclick="prevPage()" class="btn-prev flex flex-col items-center cursor-pointer">
+                            <span class="text-3xl">🖼️</span>
+                        </div>
+                        
+                        <div class="text-amber-400/50 text-sm">
+                            ${currentState.pageIndex} / ${storyData.length - 1}
+                        </div>
+                        
+                        <div onclick="nextPage()" class="btn-next flex flex-col items-center">
+                            <span class="text-3xl">🎨</span>
+                            <span class="text-xs font-bold mt-1 text-amber-400">다음</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            div.innerHTML = imgHtml + textHtml;
+            app.appendChild(div);
+        }
+
+        function renderEnding(data) {
+            const div = document.createElement('div');
+            div.className = "w-full h-full relative cursor-pointer fade-in";
+            div.onclick = restart;
+            div.innerHTML = `
+                <div class="img-container">
+                    <img src="${data.image}" class="img-cover" alt="끝" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex flex-col items-center justify-center p-8\\' style=\\'background: linear-gradient(135deg, #1a1a2e, #16213e);\\'><span class=\\'text-7xl mb-6 float-animation\\'>🌟🎨🌟</span><h2 class=\\'gold-text text-3xl font-comic mb-4\\'>이야기 끝!</h2><p class=\\'text-amber-300\\'>클림트 아저씨의 그림을<br>보러 가봐요!</p></div>'">
+                </div>
+                <div class="absolute bottom-10 w-full text-center font-comic animate-pulse text-xl py-3" style="background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);">
+                    <span class="text-amber-300">처음으로 돌아가기 ↺</span>
+                </div>
+            `;
+            app.appendChild(div);
+        }
+
+        // --- 로직 ---
+
+        function nextPage() {
+            if (currentState.pageIndex < storyData.length - 1) {
+                currentState.pageIndex++;
+                render();
+            }
+        }
+
+        function prevPage() {
+            if (currentState.pageIndex > 0) {
+                currentState.pageIndex--;
+                render();
+            }
+        }
+
+        function restart() {
+            currentState.pageIndex = 0;
+            render();
+        }
+
+        render();
+
+    </script>
+    <a href="index.html" class="back-button">🏠</a>
+</body>
+
+</html>
