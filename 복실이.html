@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,37 +10,59 @@
     <style>
         body {
             font-family: 'Jua', sans-serif;
-            background-color: #a5d2ff; /* 배경색 수정됨 (하늘색) */
+            background-color: #a5d2ff;
+            /* 배경색 수정됨 (하늘색) */
             color: #4a3f35;
         }
+
         /* 스크롤 애니메이션 */
         .fade-in-section {
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
+
         .fade-in-section.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
+
         /* 둥실둥실 애니메이션 */
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
+
         .animate-float {
             animation: float 3s ease-in-out infinite;
         }
+
         /* 빨려들어가는 효과 */
         @keyframes suckIn {
-            0% { transform: scale(1) rotate(0deg); opacity: 1; }
-            100% { transform: scale(0) rotate(720deg); opacity: 0; }
+            0% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0) rotate(720deg);
+                opacity: 0;
+            }
         }
+
         .animate-suck-in {
             animation: suckIn 1s forwards;
         }
     </style>
 </head>
+
 <body class="overflow-x-hidden">
 
     <main class="max-w-md mx-auto shadow-lg bg-white min-h-screen pb-20">
@@ -47,11 +70,13 @@
         <section id="cover" class="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-pink-50">
             <h1 class="text-4xl mb-2 animate-float text-pink-600">#북실이의 모험</h1>
             <h2 class="text-2xl mb-8 text-pink-500">부들나라로 가자</h2>
-            <img src="./images/01.webp" alt="이불 속 북실이" class="w-64 h-64 object-cover rounded-full shadow-md mb-8 mx-auto">
+            <img src="./images/01.webp" alt="이불 속 북실이"
+                class="w-64 h-64 object-cover rounded-full shadow-md mb-8 mx-auto">
             <p class="text-lg">스크롤해서 모험을 시작해봐! 👇</p>
         </section>
 
-        <section id="intro" class="min-h-screen flex flex-col items-center justify-center p-6 text-center fade-in-section">
+        <section id="intro"
+            class="min-h-screen flex flex-col items-center justify-center p-6 text-center fade-in-section">
             <div class="mb-8">
                 <p class="text-xl mb-4">나는 <span class="text-pink-500 font-bold text-2xl">북실이</span>다~옹~</p>
                 <p class="text-lg">내 이름이 왜 북실이냐면...</p>
@@ -60,39 +85,82 @@
             <img src="./images/02.webp" alt="북실이 소개" class="w-48 h-auto mx-auto animate-float">
         </section>
 
-        <section id="event" class="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-indigo-900 text-white fade-in-section">
-            <p class="text-lg mb-4">지금은 <span class="text-yellow-300">밤</span>이다~옹~</p>
-            <p class="text-lg mb-8">집사 몰래 창문으로 나왔다.</p>
-            
-            <div id="lamp-interaction" class="relative cursor-pointer">
-                <img id="lamp-img" src="./images/03.webp" alt="가로등" class="w-64 mx-auto mb-4 transition-transform duration-200">
-                <p id="knock-text" class="text-xl font-bold text-yellow-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"></p>
+        <section id="tv-scene"
+            class="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-indigo-200 to-purple-200 fade-in-section">
+            <div class="tv-container relative mb-6">
+                <div class="tv-glow absolute inset-0 bg-sky-400 blur-xl opacity-50 animate-pulse rounded-3xl"></div>
+                <img src="./images/00.webp" alt="집사와 함께 TV 보는 북실이"
+                    class="w-full h-auto rounded-2xl shadow-2xl relative z-10 tv-image">
             </div>
 
-            <p id="instruction" class="text-lg mt-4">어? 이 가로등이라고 했는데?<br>이 가로등을 <span class="text-yellow-400 font-bold">3번</span> 두드리라고 했는데...</p>
-            <p id="suck-in-text" class="hidden text-2xl font-bold text-red-400 mt-4 animate-bounce">으악! 갑자기 가로등으로 빨려들어갔다.</p>
+            <div class="story-bubbles space-y-4 w-full px-2">
+                <div class="bubble-1 opacity-0 transform translate-y-4 transition-all duration-700">
+                    <p class="text-lg bg-white/80 backdrop-blur p-4 rounded-2xl shadow-md">
+                        집사 몰래 집사가 보는 <span class="text-sky-500 font-bold">TV</span>를 봤다.
+                    </p>
+                </div>
+                <div class="bubble-2 opacity-0 transform translate-y-4 transition-all duration-700"
+                    style="transition-delay: 0.3s;">
+                    <p class="text-lg bg-white/80 backdrop-blur p-4 rounded-2xl shadow-md">
+                        <span class="text-pink-500 font-bold">부들나라</span>에 무엇이 있는지를 소개하는 영상이었다.
+                    </p>
+                </div>
+                <div class="bubble-3 opacity-0 transform translate-y-4 transition-all duration-700"
+                    style="transition-delay: 0.6s;">
+                    <p
+                        class="text-xl bg-gradient-to-r from-pink-100 to-sky-100 p-4 rounded-2xl shadow-md border-2 border-pink-300">
+                        그래서 <span class="text-pink-600 font-bold text-2xl animate-bounce inline-block">가 보기로 했다!</span>
+                        🐱✨
+                    </p>
+                </div>
+            </div>
         </section>
 
-        <section id="world" class="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-sky-100 fade-in-section">
-            <p class="text-xl mb-6">어! 여기가 어디지?<br><span class="text-3xl text-sky-500 font-bold animate-bounce inline-block">우와!</span> <span class="text-pink-500">부들나라</span>다!</p>
+        <section id="event"
+            class="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-indigo-900 text-white fade-in-section">
+            <p class="text-lg mb-4">지금은 <span class="text-yellow-300">밤</span>이다~옹~</p>
+            <p class="text-lg mb-8">집사 몰래 창문으로 나왔다.</p>
+
+            <div id="lamp-interaction" class="relative cursor-pointer">
+                <img id="lamp-img" src="./images/03.webp" alt="가로등"
+                    class="w-64 mx-auto mb-4 transition-transform duration-200">
+                <p id="knock-text"
+                    class="text-xl font-bold text-yellow-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                </p>
+            </div>
+
+            <p id="instruction" class="text-lg mt-4">어? 이 가로등이라고 했는데?<br>이 가로등을 <span
+                    class="text-yellow-400 font-bold">3번</span> 두드리라고 했는데...</p>
+            <p id="suck-in-text" class="hidden text-2xl font-bold text-red-400 mt-4 animate-bounce">으악! 갑자기 가로등으로
+                빨려들어갔다.</p>
+        </section>
+
+        <section id="world"
+            class="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-sky-100 fade-in-section">
+            <p class="text-xl mb-6">어! 여기가 어디지?<br><span
+                    class="text-3xl text-sky-500 font-bold animate-bounce inline-block">우와!</span> <span
+                    class="text-pink-500">부들나라</span>다!</p>
             <img src="./images/04.webp" alt="부들나라" class="w-full h-auto rounded-lg shadow-md mb-6">
             <p class="text-lg">바닥이 <span class="text-pink-400">푹신한 하얀색 구름</span>이다옹~</p>
         </section>
 
-        <section id="friends" class="min-h-screen flex flex-col items-center justify-center p-6 text-center fade-in-section">
+        <section id="friends"
+            class="min-h-screen flex flex-col items-center justify-center p-6 text-center fade-in-section">
             <p class="text-lg mb-6">어? 누구지? 어! <span class="text-pink-500 font-bold">뱅글이</span>다!</p>
-            
+
             <img src="./images/05.webp" alt="북실이와 뱅글이" class="w-full rounded-lg shadow-sm mb-8 animate-float">
-            
+
             <div class="space-y-4 w-full px-2">
                 <div class="flex justify-start">
-                    <div class="bg-pink-100 p-4 rounded-2xl rounded-tl-none border-2 border-pink-200 text-left relative max-w-[80%]">
+                    <div
+                        class="bg-pink-100 p-4 rounded-2xl rounded-tl-none border-2 border-pink-200 text-left relative max-w-[80%]">
                         <span class="text-pink-500 font-bold text-sm block mb-1">북실이</span>
                         안녕! 뱅글아!
                     </div>
                 </div>
                 <div class="flex justify-end">
-                    <div class="bg-sky-100 p-4 rounded-2xl rounded-tr-none border-2 border-sky-200 text-right relative max-w-[80%]">
+                    <div
+                        class="bg-sky-100 p-4 rounded-2xl rounded-tr-none border-2 border-sky-200 text-right relative max-w-[80%]">
                         <span class="text-sky-500 font-bold text-sm block mb-1">뱅글이</span>
                         안녕! 북실아!<br>이건 <span class="text-pink-400">부들 열매</span>야. 먹어 볼래?
                     </div>
@@ -102,10 +170,11 @@
             <p class="text-lg mt-8">응! (냠냠)</p>
         </section>
 
-        <section id="climax" class="min-h-screen flex flex-col items-center justify-center p-6 text-center fade-in-section">
+        <section id="climax"
+            class="min-h-screen flex flex-col items-center justify-center p-6 text-center fade-in-section">
             <img src="./images/06.webp" alt="부들열매 먹는 북실이" class="w-48 h-48 rounded-full mb-6 mx-auto animate-float">
             <p class="text-lg mb-4">부들열매를 먹어보았다. <span class="text-pink-500 font-bold animate-pulse">엄청 맛있었다!</span></p>
-            
+
             <div class="mt-8 p-6 bg-yellow-50 rounded-xl border-4 border-yellow-200">
                 <img src="./images/07.webp" alt="결심한 북실이" class="w-40 mx-auto mb-4">
                 <p class="text-2xl font-bold mb-2 text-pink-600">결심했다옹!</p>
@@ -114,11 +183,13 @@
             </div>
         </section>
 
-        <section id="outro" class="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-pink-100 fade-in-section">
+        <section id="outro"
+            class="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-pink-100 fade-in-section">
             <img src="./images/08.webp" alt="마지막 인사" class="w-full rounded-lg shadow-lg mb-8">
             <h2 class="text-4xl font-bold text-pink-600 mb-12 animate-bounce">안녀옹!</h2>
-            
-            <button onclick="scrollToTop()" class="px-8 py-3 bg-pink-500 text-white rounded-full text-xl font-bold hover:bg-pink-600 transition-colors shadow-md">
+
+            <button onclick="scrollToTop()"
+                class="px-8 py-3 bg-pink-500 text-white rounded-full text-xl font-bold hover:bg-pink-600 transition-colors shadow-md">
                 다시 보기 🔄
             </button>
         </section>
@@ -145,6 +216,26 @@
             observer.observe(section);
         });
 
+        // TV 씬 말풍선 애니메이션
+        const tvSceneObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bubbles = entry.target.querySelectorAll('.story-bubbles > div');
+                    bubbles.forEach((bubble, index) => {
+                        setTimeout(() => {
+                            bubble.classList.remove('opacity-0', 'translate-y-4');
+                            bubble.classList.add('opacity-100', 'translate-y-0');
+                        }, index * 500);
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        const tvScene = document.getElementById('tv-scene');
+        if (tvScene) {
+            tvSceneObserver.observe(tvScene);
+        }
+
         // 가로등 인터랙션
         let clickCount = 0;
         const lampContainer = document.getElementById('lamp-interaction');
@@ -156,7 +247,7 @@
 
         lampContainer.addEventListener('click', () => {
             clickCount++;
-            
+
             // 클릭 효과 (흔들림)
             lampImg.classList.add('animate-pulse');
             setTimeout(() => lampImg.classList.remove('animate-pulse'), 200);
@@ -169,7 +260,7 @@
                 knockText.textContent = "똑똑똑!";
                 instruction.style.visibility = 'hidden';
                 suckInText.classList.remove('hidden');
-                
+
                 lampImg.classList.add('animate-suck-in');
 
                 setTimeout(() => {
@@ -189,4 +280,5 @@
         }
     </script>
 </body>
+
 </html>
